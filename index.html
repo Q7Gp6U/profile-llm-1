@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Твое путешествие</title>
+  <style>
+    :root {
+      --bg: #fffaf4;
+      --bg-soft: #f8efe2;
+      --surface: rgba(255,255,255,.78);
+      --surface-strong: rgba(255,255,255,.92);
+      --text: #18323a;
+      --muted: #61757c;
+      --line: rgba(24,50,58,.08);
+      --sky: #66b7ff;
+      --sky-deep: #2d8fe4;
+      --green: #62b285;
+      --green-deep: #378a60;
+      --sand: #f1d9b6;
+      --peach: #ffb67a;
+      --gold: #efc26b;
+      --rose: #f59ac7;
+      --shadow: 0 24px 60px rgba(16, 34, 40, 0.14);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --container: 1200px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(102,183,255,.22), transparent 24%),
+        radial-gradient(circle at 100% 0%, rgba(245,154,199,.14), transparent 26%),
+        radial-gradient(circle at 100% 100%, rgba(98,178,133,.14), transparent 28%),
+        linear-gradient(180deg, #fffaf4 0%, #fff7ef 45%, #fffaf4 100%);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      z-index: -1;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: .6;
+      pointer-events: none;
+    }
+
+    body::before {
+      width: 360px;
+      height: 360px;
+      background: rgba(102,183,255,.22);
+      top: -120px;
+      left: -120px;
+    }
+
+    body::after {
+      width: 320px;
+      height: 320px;
+      background: rgba(245,154,199,.16);
+      right: -100px;
+      top: 220px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; }
+    button, input, select, textarea { font: inherit; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--container));
+      margin: 0 auto;
+    }
+
+    .section { padding: 92px 0; }
+    .section.alt {
+      background: linear-gradient(180deg, rgba(255,255,255,.44), rgba(255,255,255,.18));
+      backdrop-filter: blur(6px);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(45,143,228,.1);
+      color: var(--muted);
+      font-size: .92rem;
+      margin-bottom: 16px;
+      backdrop-filter: blur(14px);
+      box-shadow: 0 10px 28px rgba(16,34,40,.06);
+    }
+
+    h1, h2, h3, h4 { line-height: 1.04; letter-spacing: -.03em; }
+    h1 { font-size: clamp(2.9rem, 7vw, 5.6rem); max-width: 8ch; margin-bottom: 14px; }
+    h2 { font-size: clamp(2rem, 4vw, 3.35rem); max-width: 14ch; }
+    h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .hero-sub { display: block; font-size: clamp(1.25rem, 2vw, 1.85rem); font-weight: 600; margin-bottom: 10px; }
+    .lead { max-width: 64ch; color: var(--muted); font-size: 1.08rem; }
+    .muted { color: var(--muted); }
+
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,.84), rgba(255,255,255,.64));
+      border: 1px solid rgba(255,255,255,.78);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px);
+    }
+
+    .pill-row, .chips, .nav-links { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .pill, .chip, .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(24,50,58,.08);
+      background: rgba(255,255,255,.84);
+      color: var(--muted);
+      font-size: .92rem;
+      transition: .25s ease;
+    }
+
+    .pill:hover, .chip:hover, .tag:hover {
+      transform: translateY(-2px);
+      background: #fff;
+      border-color: rgba(45,143,228,.18);
+    }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 30px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 56px;
+      padding: 0 24px;
+      border-radius: 18px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+    }
+
+    .btn:hover { transform: translateY(-3px); }
+    .btn-primary {
+      color: white;
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      box-shadow: 0 18px 34px rgba(45,143,228,.28);
+    }
+    .btn-primary:hover { box-shadow: 0 22px 40px rgba(45,143,228,.34); }
+    .btn-secondary {
+      background: rgba(255,255,255,.74);
+      color: var(--text);
+      border-color: rgba(24,50,58,.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 0;
+      background: rgba(255,250,244,.76);
+      border-bottom: 1px solid rgba(24,50,58,.06);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: -.03em;
+    }
+
+    .brand-mark {
+      position: relative;
+      width: 50px;
+      height: 50px;
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(255,255,255,.96), rgba(255,255,255,.7));
+      border: 1px solid rgba(45,143,228,.12);
+      overflow: hidden;
+      box-shadow: 0 14px 28px rgba(16,34,40,.08);
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 1.6px dashed rgba(45,143,228,.34);
+      border-radius: 14px;
+      animation: revealPath 4.5s ease-in-out infinite;
+    }
+
+    .brand-dot {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--peach), var(--gold));
+      top: 18px;
+      left: 4px;
+      box-shadow: 0 0 0 5px rgba(239,194,107,.14);
+      offset-path: path('M 8 30 C 14 10, 35 8, 41 24 S 29 42, 18 34');
+      animation: travelDot 4.5s ease-in-out infinite;
+    }
+
+    .brand small {
+      display: block;
+      font-size: .76rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+
+    .nav-links a {
+      padding: 10px 14px;
+      border-radius: 12px;
+      color: var(--muted);
+      transition: .24s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,.8);
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+
+    .hero {
+      position: relative;
+      padding: 46px 0 50px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.02fr .98fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-copy p { margin-top: 16px; font-size: 1.08rem; color: var(--muted); max-width: 56ch; }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .mini {
+      padding: 18px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(24,50,58,.06);
+      box-shadow: 0 14px 26px rgba(16,34,40,.08);
+    }
+
+    .mini strong { display: block; font-size: 1.28rem; margin-bottom: 4px; }
+
+    .hero-visual {
+      position: relative;
+      min-height: 650px;
+      display: grid;
+      align-items: center;
+    }
+
+    .visual-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(0px);
+      pointer-events: none;
+    }
+
+    .visual-orb.one {
+      width: 160px; height: 160px; background: radial-gradient(circle, rgba(102,183,255,.34), transparent 70%); top: 10px; right: 50px;
+    }
+    .visual-orb.two {
+      width: 180px; height: 180px; background: radial-gradient(circle, rgba(245,154,199,.24), transparent 70%); left: 10px; bottom: 80px;
+    }
+
+    .dashboard {
+      width: 100%;
+      padding: 20px;
+      border-radius: 34px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .dashboard-shell {
+      border-radius: 30px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(248,251,252,.74));
+      border: 1px solid rgba(24,50,58,.08);
+    }
+
+    .dash-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid rgba(24,50,58,.06);
+    }
+
+    .window-dots { display: flex; gap: 8px; }
+    .window-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .window-dots span:nth-child(1){ background:#ffad72; }
+    .window-dots span:nth-child(2){ background:#ffd36d; }
+    .window-dots span:nth-child(3){ background:#7fd3a2; }
+
+    .dash-body {
+      display: grid;
+      grid-template-columns: .94fr 1.06fr;
+      gap: 16px;
+      padding: 18px;
+    }
+
+    .stack { display: grid; gap: 14px; }
+
+    .card,
+    .feature-card,
+    .route-card,
+    .blog-card,
+    .quote-card,
+    .contact-card,
+    .step-card,
+    .scenario-card,
+    .mock-card,
+    .app-card,
+    .gallery-card {
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(24,50,58,.08);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 16px 34px rgba(16,34,40,.08);
+      transition: .28s ease;
+      overflow: hidden;
+    }
+
+    .card:hover,
+    .feature-card:hover,
+    .route-card:hover,
+    .blog-card:hover,
+    .quote-card:hover,
+    .contact-card:hover,
+    .step-card:hover,
+    .scenario-card:hover,
+    .mock-card:hover,
+    .app-card:hover,
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 44px rgba(16,34,40,.12);
+      border-color: rgba(45,143,228,.18);
+    }
+
+    .mini-card { padding: 18px; }
+    .mini-card .label, .form-label { display:block; color: var(--muted); font-size:.9rem; margin-bottom:8px; }
+    .mini-card strong { display:block; font-size:1.12rem; margin-bottom:6px; }
+
+    .progress { width:100%; height:8px; border-radius:999px; background: rgba(102,183,255,.18); overflow:hidden; margin-top:10px; }
+    .progress span { display:block; width:70%; height:100%; border-radius:inherit; background: linear-gradient(90deg, var(--sky-deep), var(--green)); }
+
+    .map-card {
+      position: relative;
+      min-height: 390px;
+      padding: 18px;
+      background:
+        linear-gradient(180deg, rgba(102,183,255,.12), rgba(255,255,255,.56)),
+        url('https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=80') center/cover;
+      isolation: isolate;
+    }
+
+    .map-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.42));
+      z-index: -1;
+    }
+
+    .map-grid {
+      position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.2) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.94), rgba(0,0,0,.5));
+    }
+
+    .map-route { position:absolute; inset:40px 30px 70px; pointer-events:none; }
+    .map-route svg { width:100%; height:100%; }
+    .route-path {
+      fill:none;
+      stroke: rgba(255,255,255,.95);
+      stroke-width: 4;
+      stroke-linecap: round;
+      stroke-dasharray: 8 10;
+      filter: drop-shadow(0 4px 10px rgba(45,143,228,.22));
+      animation: dashMove 22s linear infinite;
+    }
+
+    .pin {
+      position:absolute;
+      width:18px; height:18px;
+      border-radius:50% 50% 50% 0;
+      transform: rotate(-45deg);
+      background: linear-gradient(135deg, var(--peach), var(--sky-deep));
+      box-shadow: 0 10px 24px rgba(45,143,228,.24);
+    }
+    .pin::after { content:""; position:absolute; inset:5px; border-radius:50%; background:#fff; }
+    .pin.one{ top:54px; left:42px; }
+    .pin.two{ top:140px; right:82px; }
+    .pin.three{ bottom:86px; left:35%; }
+
+    .floating { position:absolute; z-index:2; animation: float 5s ease-in-out infinite; }
+    .floating.chat { top:20px; right:-6px; width:min(240px,60%); }
+    .floating.match { left:-4px; bottom:12px; width:min(250px,62%); animation-delay:.9s; }
+
+    .mock-card { padding: 16px; backdrop-filter: blur(8px); background: rgba(255,255,255,.84); }
+    .mock-card h4 { font-size:.98rem; margin-bottom:10px; }
+    .mock-row {
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:10px 0; border-bottom:1px solid rgba(24,50,58,.06); color:var(--muted); font-size:.93rem;
+    }
+    .mock-row:last-child { border-bottom:0; padding-bottom:0; }
+
+    .badge {
+      display:inline-flex; align-items:center; gap:8px; padding:7px 10px; border-radius:999px;
+      font-size:.85rem; background: rgba(98,178,133,.16); color: var(--green-deep);
+    }
+    .badge.sky { background: rgba(45,143,228,.14); color:#22689f; }
+    .badge.rose { background: rgba(245,154,199,.16); color:#b04b83; }
+
+    .gallery-strip {
+      position: absolute;
+      inset: auto 30px 20px 30px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      z-index: 2;
+    }
+
+    .thumb {
+      height: 80px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.38);
+      box-shadow: 0 12px 24px rgba(16,34,40,.14);
+    }
+
+    .thumb img { height: 100%; object-fit: cover; }
+
+    .grid-2,.grid-3,.grid-4 { display:grid; gap:18px; }
+    .grid-2 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .grid-4 { grid-template-columns: repeat(4,minmax(0,1fr)); }
+
+    .feature-card,
+    .route-card,
+    .blog-card,
+    .quote-card,
+    .contact-card,
+    .step-card,
+    .scenario-card,
+    .app-card,
+    .gallery-card { padding: 22px; }
+
+    .feature-card .icon,
+    .step-card .icon,
+    .contact-card .icon,
+    .route-badge {
+      width: 50px; height: 50px; border-radius: 16px; display:grid; place-items:center; margin-bottom:18px;
+      background: linear-gradient(145deg, rgba(102,183,255,.22), rgba(245,154,199,.12));
+      color: var(--sky-deep); font-size:1.2rem; font-weight:800;
+    }
+
+    .planner-shell {
+      display:grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap:20px;
+      padding:22px;
+      border-radius:34px;
+    }
+
+    .tab-row {
+      display:inline-flex; gap:10px; padding:8px; border-radius:18px; background: rgba(255,255,255,.76);
+      border:1px solid rgba(24,50,58,.07); margin-bottom:20px;
+    }
+
+    .tab {
+      border:0; background:transparent; border-radius:14px; padding:12px 16px; color:var(--muted); cursor:pointer;
+      transition:.24s ease;
+    }
+    .tab.active, .tab:hover {
+      background: linear-gradient(135deg, rgba(45,143,228,.16), rgba(98,178,133,.12));
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .tab-panel { display:none; }
+    .tab-panel.active { display:block; }
+
+    .form-grid {
+      display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:14px; margin-bottom:18px;
+    }
+
+    .input-shell {
+      padding:16px; border-radius:18px; border:1px solid rgba(24,50,58,.07); background: rgba(255,255,255,.84);
+    }
+    .input-shell select,.input-shell input,.contact-form textarea { width:100%; border:0; outline:none; background:transparent; color:var(--text); }
+
+    .toggle-grid { display:grid; gap:12px; margin-top:16px; }
+    .toggle {
+      display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px; border-radius:18px;
+      background: rgba(255,255,255,.84); border:1px solid rgba(24,50,58,.07);
+    }
+    .switch {
+      position:relative; width:54px; height:32px; border-radius:999px; background: rgba(24,50,58,.12); flex-shrink:0;
+    }
+    .switch::after {
+      content:""; position:absolute; top:4px; left:4px; width:24px; height:24px; border-radius:50%; background:#fff;
+      box-shadow:0 6px 14px rgba(24,50,58,.14); transition: transform .24s ease;
+    }
+    .toggle.active .switch { background: linear-gradient(135deg, var(--sky-deep), var(--green)); }
+    .toggle.active .switch::after { transform: translateX(22px); }
+
+    .summary-card {
+      padding:22px; border-radius:26px; background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(247,252,255,.78));
+      border:1px solid rgba(24,50,58,.08); box-shadow:0 16px 34px rgba(24,50,58,.1); display:grid; gap:16px; height:100%;
+    }
+
+    .summary-list { display:grid; gap:12px; }
+    .summary-item {
+      display:flex; align-items:start; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid rgba(24,50,58,.07);
+    }
+    .summary-item:last-child { border-bottom:0; padding-bottom:0; }
+
+    .mini-profile {
+      display:flex; align-items:center; gap:12px; padding:14px; border-radius:18px; background: rgba(255,255,255,.84); border:1px solid rgba(24,50,58,.07);
+    }
+    .avatar {
+      width:48px; height:48px; border-radius:14px; background: linear-gradient(135deg, rgba(45,143,228,.28), rgba(245,154,199,.2));
+      display:grid; place-items:center; font-weight:800; color:var(--sky-deep); flex-shrink:0;
+    }
+
+    .route-rail { display:grid; gap:18px; }
+
+    .card-cover,
+    .blog-cover,
+    .gallery-cover {
+      height: 210px;
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .card-cover img,
+    .blog-cover img,
+    .gallery-cover img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+
+    .route-card:hover .card-cover img,
+    .blog-card:hover .blog-cover img,
+    .gallery-card:hover .gallery-cover img { transform: scale(1.05); }
+
+    .cover-overlay {
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, rgba(14,24,28,.02), rgba(14,24,28,.34));
+    }
+
+    .route-card .meta,
+    .blog-card .meta { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+
+    .route-foot,.blog-foot,.quote-foot {
+      display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:18px; color:var(--muted); font-size:.93rem;
+    }
+
+    .chat-preview { display:grid; gap:14px; }
+    .bubble {
+      max-width: 90%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(24,50,58,.07);
+      color: var(--muted);
+    }
+    .bubble.user {
+      margin-left:auto;
+      background: rgba(102,183,255,.15);
+      border-color: rgba(45,143,228,.18);
+      color: var(--text);
+    }
+
+    .stack-links { display:grid; gap:12px; }
+    .stack-links a {
+      display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px;
+      border-radius:16px; background: rgba(255,255,255,.75); border:1px solid rgba(24,50,58,.06); transition:.24s ease;
+    }
+    .stack-links a:hover { transform: translateX(4px); border-color: rgba(45,143,228,.18); }
+
+    .slider-controls { display:flex; gap:10px; }
+    .slider-btn {
+      width:42px; height:42px; border-radius:14px; border:1px solid rgba(24,50,58,.08); background: rgba(255,255,255,.84);
+      cursor:pointer; transition:.24s ease;
+    }
+    .slider-btn:hover { transform: translateY(-2px); background:#fff; }
+
+    .slider {
+      display:grid; grid-auto-flow:column; grid-auto-columns: calc(50% - 9px); gap:18px; overflow-x:auto; scroll-snap-type:x mandatory;
+      scrollbar-width:none; padding-bottom:8px;
+    }
+    .slider::-webkit-scrollbar { display:none; }
+    .slider > * { scroll-snap-align:start; }
+
+    .blog-grid {
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:18px;
+    }
+
+    .gallery-grid {
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+    }
+
+    .mosaic {
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      min-height: 520px;
+    }
+
+    .mosaic-main,
+    .mosaic-side {
+      display:grid;
+      gap:18px;
+    }
+
+    .mosaic-side { grid-template-rows: 1fr 1fr; }
+
+    .gallery-card { padding: 0; }
+    .gallery-copy { padding: 22px; }
+
+    .contact-grid {
+      display:grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap:18px;
+    }
+
+    .contact-form { display:grid; gap:14px; }
+    .contact-form textarea { min-height:140px; resize:vertical; }
+
+    footer { padding: 26px 0 46px; color: var(--muted); }
+    .footer-inner {
+      display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap;
+      padding-top:18px; border-top:1px solid rgba(24,50,58,.07);
+    }
+
+    @keyframes revealPath {
+      0%,100% { opacity:.3; transform: scale(.86) rotate(0deg); }
+      50% { opacity:1; transform: scale(1) rotate(3deg); }
+    }
+    @keyframes travelDot {
+      0% { offset-distance:0%; transform:scale(.85); }
+      50% { offset-distance:55%; transform:scale(1); }
+      100% { offset-distance:100%; transform:scale(.85); }
+    }
+    @keyframes dashMove {
+      from { stroke-dashoffset:0; }
+      to { stroke-dashoffset:-300; }
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .planner-shell,
+      .blog-grid,
+      .gallery-grid,
+      .contact-grid,
+      .dash-body,
+      .mosaic {
+        grid-template-columns: 1fr;
+      }
+      .hero-visual { min-height: auto; }
+      .grid-4 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .grid-3,.grid-2 { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .slider { grid-auto-columns: calc(70% - 9px); }
+      .mosaic-side { grid-template-columns: 1fr 1fr; grid-template-rows: none; }
+    }
+
+    @media (max-width: 760px) {
+      .section { padding: 72px 0; }
+      .nav-wrap { flex-direction: column; align-items: stretch; }
+      .nav-links { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+      .hero { padding-top: 28px; }
+      .hero-meta,
+      .grid-4,
+      .grid-3,
+      .grid-2,
+      .form-grid,
+      .mosaic-side,
+      .gallery-strip { grid-template-columns: 1fr; }
+      .dashboard,
+      .planner-shell { padding: 16px; }
+      .dash-top,
+      .dash-body { padding: 14px; }
+      .floating.chat,
+      .floating.match { position: static; width: 100%; animation: none; }
+      .map-card { min-height: 320px; }
+      .slider { grid-auto-columns: 100%; }
+      .btn, .btn-row .btn { width: 100%; }
+      h2 { max-width: 100%; }
+      .gallery-strip { position: static; margin-top: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#hero">
+        <span class="brand-mark" aria-hidden="true"><span class="brand-dot"></span></span>
+        <span>Твое путешествие<small>Собери свой маршрут под себя</small></span>
+      </a>
+      <nav class="nav-links">
+        <a href="#hero">Главная</a>
+        <a href="#about">О проекте</a>
+        <a href="#planner">Маршруты</a>
+        <a href="#blog">Блог</a>
+        <a href="#contacts">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Новые знакомства • Локальный опыт • Свобода маршрута</span>
+          <h1>Твое путешествие</h1>
+          <span class="hero-sub">Собери свое уникальное путешествие.</span>
+          <p>Маршруты, места и впечатления под твои интересы. Выбирай формат поездки, который подходит именно тебе: с попутчиком, с местным жителем или в своем ритме — без шаблонов, пакетных сценариев и скучных туристических треков.</p>
+          <div class="pill-row" style="margin-top: 24px;">
+            <span class="pill">Город / страна</span>
+            <span class="pill">Тип отдыха</span>
+            <span class="pill">Бюджет</span>
+            <span class="pill">Длительность</span>
+          </div>
+          <div class="btn-row">
+            <a class="btn btn-primary" href="#planner">Начать путешествие</a>
+            <a class="btn btn-secondary" href="#about">Узнать о проекте</a>
+          </div>
+          <div class="hero-meta">
+            <div class="mini glass"><strong>84%</strong><span class="muted">совпадение по интересам с потенциальными попутчиками</span></div>
+            <div class="mini glass"><strong>Live</strong><span class="muted">ощущение настоящего travel-сервиса с маршрутами, лайками и чатами</span></div>
+            <div class="mini glass"><strong>12+</strong><span class="muted">форматов поездок под настроение, темп и стиль путешествия</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <span class="visual-orb one"></span>
+          <span class="visual-orb two"></span>
+          <div class="dashboard glass">
+            <div class="dashboard-shell">
+              <div class="dash-top">
+                <div>
+                  <strong>Твой маршрут под настроение</strong>
+                  <div class="muted" style="font-size:.94rem; margin-top:4px;">Люди, места и ощущения собираются в персональный travel-сценарий</div>
+                </div>
+                <div class="window-dots"><span></span><span></span><span></span></div>
+              </div>
+              <div class="dash-body">
+                <div class="stack">
+                  <div class="mini-card card">
+                    <span class="label">Шаг 1</span>
+                    <strong>Лиссабон, 5 дней</strong>
+                    <div class="muted">Гастро + локальные районы + умеренный темп</div>
+                    <div class="progress"><span></span></div>
+                  </div>
+                  <div class="mini-card card">
+                    <span class="label">Совпадение по стилю</span>
+                    <strong>Ира, 84%</strong>
+                    <div class="muted">Любит атмосферные улицы, маленькие кафе и спонтанные открытия</div>
+                  </div>
+                  <div class="mini-card card">
+                    <span class="label">Локальный гид</span>
+                    <strong>Матеуш, Alfama</strong>
+                    <div class="muted">Покажет город через музыку, закаты, тихие дворы и вечерние места без толпы</div>
+                  </div>
+                </div>
+                <div class="map-card">
+                  <div class="map-grid"></div>
+                  <div class="map-route">
+                    <svg viewBox="0 0 420 260" preserveAspectRatio="none">
+                      <path class="route-path" d="M32 54 C120 8, 176 120, 248 90 S354 46, 380 170 306 240, 210 210 98 138, 80 224" />
+                    </svg>
+                  </div>
+                  <span class="pin one"></span>
+                  <span class="pin two"></span>
+                  <span class="pin three"></span>
+
+                  <div class="floating chat">
+                    <div class="mock-card">
+                      <span class="badge sky">чат попутчиков</span>
+                      <h4 style="margin-top:10px;">Ищу компанию на 3-й день маршрута</h4>
+                      <div class="mock-row"><span>История и гастро-прогулка</span><strong>4 отклика</strong></div>
+                      <div class="mock-row"><span>Совпадение интересов</span><strong>91%</strong></div>
+                    </div>
+                  </div>
+
+                  <div class="floating match">
+                    <div class="mock-card">
+                      <span class="badge rose">локальный опыт</span>
+                      <h4 style="margin-top:10px;">Вечер в городе глазами местного</h4>
+                      <div class="mock-row"><span>Район</span><strong>Bairro Alto</strong></div>
+                      <div class="mock-row"><span>Формат</span><strong>Музыка • кафе • прогулка</strong></div>
+                    </div>
+                  </div>
+
+                  <div class="gallery-strip">
+                    <div class="thumb"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=800&q=80" alt="Атмосферная улица" /></div>
+                    <div class="thumb"><img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=800&q=80" alt="Путешественники" /></div>
+                    <div class="thumb"><img src="https://images.unsplash.com/photo-1527631778191-a7f3a13f2fdd?auto=format&fit=crop&w=800&q=80" alt="Кафе и локальный опыт" /></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="about">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">О проекте</span>
+            <h2>Путешествие как живая мозаика эмоций, людей и мест</h2>
+          </div>
+          <p class="lead">Это не каталог туров, а концепт сервиса, где поездка собирается под тебя: по интересам, бюджету, длительности и типу отдыха. Здесь видна свобода выбора, локальный опыт, новые знакомства и вдохновение от небанальных маршрутов.</p>
+        </div>
+        <div class="grid-4">
+          <article class="feature-card">
+            <div class="icon">✦</div>
+            <h3>Персональная сборка</h3>
+            <p class="muted">Маршрут под твой характер, темп и настроение — от направления до деталей и атмосферы поездки.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">↗</div>
+            <h3>Попутчики по совпадению</h3>
+            <p class="muted">Поиск людей со схожим стилем путешествия, интересами, бюджетом и ожиданиями от поездки.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">◎</div>
+            <h3>Знакомство с местными</h3>
+            <p class="muted">Возможность увидеть город глубже через человека, который знает его повседневный ритм и атмосферу.</p>
+          </article>
+          <article class="feature-card">
+            <div class="icon">▣</div>
+            <h3>Нестандартные места</h3>
+            <p class="muted">Карточки локаций, кафе и статей помогают уйти от шаблона и собрать более живое впечатление о городе.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="planner">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Маршруты / Создать маршрут</span>
+            <h2>Начни путешествие с персональной сборки или вдохновись готовым сценарием</h2>
+          </div>
+          <div class="slider-controls">
+            <button class="slider-btn" type="button" data-scroll-target="routeSlider" data-dir="-1">←</button>
+            <button class="slider-btn" type="button" data-scroll-target="routeSlider" data-dir="1">→</button>
+          </div>
+        </div>
+
+        <div class="planner-shell glass">
+          <div>
+            <div class="tab-row">
+              <button class="tab active" data-tab="builder" type="button">Собрать под себя</button>
+              <button class="tab" data-tab="scenarios" type="button">Готовые примеры</button>
+            </div>
+
+            <div class="tab-panel active" id="builder">
+              <div class="form-grid">
+                <label class="input-shell">
+                  <span class="form-label">Город / страна</span>
+                  <select><option>Лиссабон, Португалия</option><option>Стамбул, Турция</option><option>Тбилиси, Грузия</option></select>
+                </label>
+                <label class="input-shell">
+                  <span class="form-label">Тип отдыха</span>
+                  <select><option>Локальный опыт и открытия</option><option>Релакс и перезагрузка</option><option>Гастро и городская атмосфера</option></select>
+                </label>
+                <label class="input-shell">
+                  <span class="form-label">Бюджет</span>
+                  <select><option>Средний</option><option>Комфорт</option><option>Эконом</option></select>
+                </label>
+                <label class="input-shell">
+                  <span class="form-label">Длительность</span>
+                  <select><option>4–6 дней</option><option>2–3 дня</option><option>7+ дней</option></select>
+                </label>
+              </div>
+
+              <div>
+                <span class="form-label">Темп поездки</span>
+                <div class="chips">
+                  <span class="chip">Активный</span>
+                  <span class="chip" style="background: rgba(45,143,228,.12); border-color: rgba(45,143,228,.18); color: var(--text);">Умеренный</span>
+                  <span class="chip">Спокойный</span>
+                </div>
+              </div>
+
+              <div style="margin-top:16px;">
+                <span class="form-label">Тематика</span>
+                <div class="chips">
+                  <span class="chip">Релакс</span><span class="chip">Гастро</span><span class="chip">Магия</span><span class="chip">Духовность</span><span class="chip">Спорт</span><span class="chip">Природа</span><span class="chip">История</span>
+                </div>
+              </div>
+
+              <div class="toggle-grid">
+                <div class="toggle active">
+                  <div>
+                    <h3>Найти попутчика</h3>
+                    <p class="muted">Подобрать людей со схожими интересами, стилем поездки и выбранным направлением.</p>
+                  </div>
+                  <span class="switch"></span>
+                </div>
+                <div class="toggle active">
+                  <div>
+                    <h3>Добавить знакомство с местным</h3>
+                    <p class="muted">Дополнить маршрут локальным опытом и встречей с человеком, который покажет настоящий ритм города.</p>
+                  </div>
+                  <span class="switch"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="scenarios">
+              <div class="slider" id="routeSlider">
+                <article class="scenario-card"><span class="badge sky">мягкое вдохновение</span><h3 style="margin-top:12px;">Духовный уикенд</h3><p class="muted">Тишина, красивые пространства, медленный ритм и внутреннее ощущение перезагрузки.</p></article>
+                <article class="scenario-card"><span class="badge sky">городской ритм</span><h3 style="margin-top:12px;">Гастрономический день в городе</h3><p class="muted">Небанальные кафе, локальные рынки, винные бары и маленькие гастро-точки.</p></article>
+                <article class="scenario-card"><span class="badge sky">вне шаблона</span><h3 style="margin-top:12px;">Один день вне туристических маршрутов</h3><p class="muted">Дворы, атмосферные улицы, районные кофейни и точки, которые советуют местные.</p></article>
+                <article class="scenario-card"><span class="badge rose">энергия</span><h3 style="margin-top:12px;">Энергия города</h3><p class="muted">Движение, музыка, встречи, насыщенные локации и ощущение живого городского импульса.</p></article>
+                <article class="scenario-card"><span class="badge sky">перезагрузка</span><h3 style="margin-top:12px;">Медленное путешествие для перезагрузки</h3><p class="muted">Меньше шума, больше воздуха, света, спокойных маршрутов и мягкого локального опыта.</p></article>
+              </div>
+            </div>
+          </div>
+
+          <aside class="summary-card">
+            <div>
+              <span class="eyebrow" style="margin-bottom:12px;">Предпросмотр сервиса</span>
+              <h3 style="font-size:1.6rem; margin-bottom:10px;">Твой маршрут: Лиссабон под локальный ритм</h3>
+              <p class="muted">Визуальная имитация показывает персональную сборку, совпадения по попутчикам, локальный опыт и вдохновляющие сценарии маршрутов.</p>
+            </div>
+            <div class="summary-list">
+              <div class="summary-item"><div><strong>Основные параметры</strong><div class="muted">город, тип отдыха, бюджет, длительность</div></div><span class="badge sky">готово</span></div>
+              <div class="summary-item"><div><strong>Дополнительные опции</strong><div class="muted">попутчик, местный житель, темп, тематика</div></div><span class="badge">включено</span></div>
+            </div>
+            <div class="mini-profile"><div class="avatar">И</div><div><strong>Попутчик с похожим стилем</strong><div class="muted">Совпадение 84% • гастро • спокойные районы • локальные места</div></div></div>
+            <div class="mini-profile"><div class="avatar">М</div><div><strong>Местный житель для знакомства с городом</strong><div class="muted">Встреча в районе Alfama • живые дворики • вечерняя прогулка • музыка</div></div></div>
+            <a class="btn btn-primary" href="#contacts">Продолжить как реальный сервис</a>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container gallery-grid">
+        <div>
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Эмоции и визуал</span>
+              <h2>Путешествие как пазл из атмосферных мест, людей и маленьких открытий</h2>
+            </div>
+          </div>
+          <div class="mosaic">
+            <article class="gallery-card mosaic-main">
+              <div class="gallery-cover">
+                <img src="https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=1400&q=80" alt="Путешествие по атмосферному городу" />
+              </div>
+              <div class="gallery-copy">
+                <span class="badge rose">live travel feeling</span>
+                <h3 style="margin-top:12px;">Город, который хочется прожить, а не просто посмотреть</h3>
+                <p class="muted">Дизайн должен вызывать предвкушение: солнечные улицы, локальные кафе, новые встречи, легкость движения и ощущение, что маршрут действительно собран под тебя.</p>
+              </div>
+            </article>
+            <div class="mosaic-side">
+              <article class="gallery-card">
+                <div class="gallery-cover"><img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?auto=format&fit=crop&w=1200&q=80" alt="Путешественница у моря" /></div>
+                <div class="gallery-copy"><h3>Свобода выбора</h3><p class="muted">Один, с попутчиком или с местным — без лишних ограничений.</p></div>
+              </article>
+              <article class="gallery-card">
+                <div class="gallery-cover"><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1200&q=80" alt="Локальные улицы и кафе" /></div>
+                <div class="gallery-copy"><h3>Локальный колорит</h3><p class="muted">Районы, детали, нетуристические точки и живая повседневность города.</p></div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <aside class="app-card">
+          <span class="eyebrow" style="margin-bottom:10px;">Как это работает</span>
+          <div class="grid-2" style="grid-template-columns: 1fr;">
+            <article class="step-card" style="padding:0; overflow:hidden;">
+              <div class="gallery-cover" style="height:160px; margin-bottom:0; border-radius:0;"><img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1200&q=80" alt="Попутчики" /></div>
+              <div style="padding:20px;"><h3>Ищи людей со схожим стилем</h3><p class="muted">Сервис показывает совпадение по маршруту, бюджету и темпу поездки.</p></div>
+            </article>
+            <article class="step-card" style="padding:0; overflow:hidden;">
+              <div class="gallery-cover" style="height:160px; margin-bottom:0; border-radius:0;"><img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1200&q=80" alt="Маршрут и вдохновение" /></div>
+              <div style="padding:20px;"><h3>Вдохновляйся примерами</h3><p class="muted">Готовые сценарии помогают мягко выбрать основу для своего уникального маршрута.</p></div>
+            </article>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Как это работает</span>
+            <h2>Понятный путь от идеи до маршрута без шаблонов</h2>
+          </div>
+          <p class="lead">Интерфейс сразу должен объяснять пользовательский сценарий: сначала направление и формат, затем темп, интересы и дополнительные опции, а после — люди, места и впечатления.</p>
+        </div>
+        <div class="grid-3">
+          <article class="step-card"><div class="icon">1</div><h3>Выбери основу поездки</h3><p class="muted">Город или страну, тип отдыха, бюджет и длительность — чтобы сервис собрал подходящий каркас маршрута.</p></article>
+          <article class="step-card"><div class="icon">2</div><h3>Добавь свой стиль</h3><p class="muted">Темп, тематику, интересы, локальные места, знакомство с местным жителем и поиск попутчика.</p></article>
+          <article class="step-card"><div class="icon">3</div><h3>Собери и покажи маршрут</h3><p class="muted">Сохраняй сценарии, смотри лайки, открывай чат и взаимодействуй с людьми, которым близок твой формат путешествия.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container blog-grid">
+        <div>
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Карточки маршрутов и мест</span>
+              <h2>Небанальные сценарии, нетуристические точки и эмоциональный локальный опыт</h2>
+            </div>
+          </div>
+          <div class="route-rail">
+            <article class="route-card">
+              <div class="card-cover">
+                <img src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?auto=format&fit=crop&w=1400&q=80" alt="Утро в атмосферном районе" />
+                <div class="cover-overlay"></div>
+              </div>
+              <div class="meta"><span class="tag">нетуристические кафе</span><span class="tag">локальный опыт</span></div>
+              <h3>Утро в районе, где живут местные</h3>
+              <p class="muted">Кофе на маленькой площади, bakery без вывески, книжный магазин во дворе и прогулка к смотровой точке без толпы.</p>
+              <div class="route-foot"><span>♡ 248 лайков</span><span>Сохранить маршрут →</span></div>
+            </article>
+            <article class="route-card">
+              <div class="card-cover">
+                <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=1400&q=80" alt="Вечер в локальном кафе" />
+                <div class="cover-overlay"></div>
+              </div>
+              <div class="meta"><span class="tag">атмосферные районы</span><span class="tag">гастро</span></div>
+              <h3>Гастрономический вечер вне туристического центра</h3>
+              <p class="muted">Три небольших места с сильной кухней, локальным вином и ощущением города, который показывают не путеводители, а живые люди.</p>
+              <div class="route-foot"><span>♡ 196 лайков</span><span>Смотреть точки →</span></div>
+            </article>
+          </div>
+        </div>
+
+        <aside class="app-card">
+          <span class="eyebrow" style="margin-bottom:10px;">Чат / зона попутчиков</span>
+          <h3 style="font-size:1.5rem; margin-bottom:14px;">Отдельное пространство для поиска компании</h3>
+          <div class="chat-preview">
+            <div class="bubble">Ищу попутчицу на 4 дня: спокойный ритм, городские прогулки, локальные кафе и один день у моря.</div>
+            <div class="bubble user">У нас схожий маршрут и бюджет. Давай сравним интересы?</div>
+            <div class="bubble">Совпадение 87%: гастро, история, спокойный темп, вечерние районы без туристического потока.</div>
+          </div>
+          <div class="stack-links" style="margin-top:18px;">
+            <a href="#planner"><span>Просмотреть рекомендованных попутчиков</span><strong>84%</strong></a>
+            <a href="#planner"><span>Добавить знакомство с местным</span><strong>+</strong></a>
+            <a href="#blog"><span>Открыть сохраненные маршруты сообщества</span><strong>24</strong></a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="blog">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Блог / статьи</span>
+            <h2>Контент для вдохновения: места, истории и идеи для личного маршрута</h2>
+          </div>
+          <div class="slider-controls">
+            <button class="slider-btn" type="button" data-scroll-target="blogSlider" data-dir="-1">←</button>
+            <button class="slider-btn" type="button" data-scroll-target="blogSlider" data-dir="1">→</button>
+          </div>
+        </div>
+        <div class="slider" id="blogSlider">
+          <article class="blog-card">
+            <div class="blog-cover"><img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1400&q=80" alt="Атмосфера города" /></div>
+            <div class="meta"><span class="tag">статья</span><span class="tag">локальный ритм</span></div>
+            <h3>Как увидеть город не как турист, а как гость</h3>
+            <p class="muted">Подборка точек и коротких привычек, которые помогают почувствовать повседневную жизнь места, а не только его открытки.</p>
+            <div class="blog-foot"><span>7 минут чтения</span><span>Открыть →</span></div>
+          </article>
+          <article class="blog-card">
+            <div class="blog-cover"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1400&q=80" alt="Локальная еда" /></div>
+            <div class="meta"><span class="tag">подборка</span><span class="tag">кафе</span></div>
+            <h3>Нетуристические кафе, куда хочется возвращаться</h3>
+            <p class="muted">Небольшие места с характером, у которых нет длинной очереди из путеводителей, но есть своя атмосфера и ритм.</p>
+            <div class="blog-foot"><span>12 адресов</span><span>Смотреть →</span></div>
+          </article>
+          <article class="blog-card">
+            <div class="blog-cover"><img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1400&q=80" alt="Спонтанные открытия в городе" /></div>
+            <div class="meta"><span class="tag">маршрут</span><span class="tag">спонтанность</span></div>
+            <h3>День спонтанных открытий: как собрать его за 10 минут</h3>
+            <p class="muted">Легкий сценарий на основе настроения, бюджета, района и желания познакомиться с новыми людьми.</p>
+            <div class="blog-foot"><span>Быстрый гайд</span><span>Открыть →</span></div>
+          </article>
+          <article class="blog-card">
+            <div class="blog-cover"><img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=80" alt="Вечер с местным жителем" /></div>
+            <div class="meta"><span class="tag">история</span><span class="tag">местный гид</span></div>
+            <h3>Когда город рассказывает о себе через человека</h3>
+            <p class="muted">Почему знакомство с местным жителем меняет восприятие маршрута сильнее, чем длинный список достопримечательностей.</p>
+            <div class="blog-foot"><span>История пользователя</span><span>Читать →</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Отзывы</span>
+            <h2>Путешествия, которые собираются по интересам и остаются в памяти</h2>
+          </div>
+        </div>
+        <div class="grid-3">
+          <article class="quote-card"><p>«Мне понравилось, что маршрут ощущается как живой конструктор: я выбрала спокойный темп, гастро-точки и сразу нашла человека со схожими интересами.»</p><div class="quote-foot"><strong>Алина</strong><span>Лиссабон</span></div></article>
+          <article class="quote-card"><p>«Опция знакомства с местным сделала поездку глубже. Вместо стандартных точек я увидела вечерний район, маленькие кафе и настоящую атмосферу города.»</p><div class="quote-foot"><strong>Марина</strong><span>Стамбул</span></div></article>
+          <article class="quote-card"><p>«Это выглядит как современный travel-сервис: есть логика маршрута, попутчики, лайки, карточки мест и ощущение, что все подстраивается под тебя.»</p><div class="quote-foot"><strong>Катя</strong><span>Тбилиси</span></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contacts">
+      <div class="container contact-grid">
+        <div class="contact-card">
+          <span class="eyebrow">Контакты</span>
+          <h2 style="max-width:12ch; margin-bottom:16px;">Начни с идеи — и собери свой маршрут дальше</h2>
+          <p class="muted">Сейчас это эмоциональный визуальный концепт живого сервиса. Он вдохновляет, показывает механику и помогает представить, как будет выглядеть персональное путешествие в готовом продукте.</p>
+          <div style="margin-top:22px; display:grid; gap:14px;">
+            <div class="contact-card" style="padding:18px; box-shadow:none; background: rgba(255,255,255,.62);">
+              <div class="icon">✉</div><strong>Email</strong><p class="muted">hello@travel-project.ru</p>
+            </div>
+            <div class="contact-card" style="padding:18px; box-shadow:none; background: rgba(255,255,255,.62);">
+              <div class="icon">⌁</div><strong>Сообщество</strong><p class="muted">Маршруты, лайки, сохранения и чат для поиска попутчиков</p>
+            </div>
+          </div>
+        </div>
+        <div class="contact-card">
+          <span class="eyebrow">Связаться</span>
+          <form class="contact-form">
+            <label class="input-shell"><span class="form-label">Как к тебе обращаться</span><input type="text" value="Твое имя" /></label>
+            <label class="input-shell"><span class="form-label">Что ты хочешь собрать</span><input type="text" value="Путешествие под свои интересы" /></label>
+            <label class="input-shell"><span class="form-label">Комментарий</span><textarea>Хочу маршрут с локальными местами, спокойным темпом и возможностью найти попутчика.</textarea></label>
+            <button class="btn btn-primary" type="button">Отправить запрос</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div><strong>Твое путешествие</strong><div class="muted">Собери свое уникальное путешествие.</div></div>
+      <div class="muted">Главная • О проекте • Маршруты • Блог • Контакты</div>
+    </div>
+  </footer>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        panels.forEach(panel => panel.classList.remove('active'));
+        tab.classList.add('active');
+        const panel = document.getElementById(tab.dataset.tab);
+        if (panel) panel.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.slider-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.scrollTarget);
+        if (!target) return;
+        const direction = Number(btn.dataset.dir || 1);
+        const amount = target.clientWidth * 0.82 * direction;
+        target.scrollBy({ left: amount, behavior: 'smooth' });
+      });
+    });
+  </script>
+</body>
+</html>
