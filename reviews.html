@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Отзывы путешественников</title>
+  <style>
+    :root {
+      --bg: #f6fbff;
+      --surface: rgba(255, 255, 255, 0.94);
+      --text: #18323a;
+      --muted: #5c7680;
+      --sky-deep: #2d8fe4;
+      --line: rgba(24, 50, 58, 0.08);
+      --shadow: 0 20px 46px rgba(24, 50, 58, 0.10);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top right, rgba(102, 183, 255, 0.14), transparent 34%), radial-gradient(circle at left center, rgba(245, 154, 199, 0.10), transparent 28%), var(--bg);
+    }
+    .page { width: min(calc(100% - 32px), 1180px); margin: 0 auto; padding: 24px 0 56px; }
+    .topbar { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+    .close-btn {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.4rem;
+      line-height: 1;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 14px 28px rgba(24, 50, 58, 0.10);
+    }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .card { display: grid; gap: 10px; padding: 18px 24px; background: var(--surface); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--shadow); animation: blockReveal 0.8s ease both; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 24px 46px rgba(24, 50, 58, 0.12); border-color: rgba(45, 143, 228, 0.14); }
+    .review-photo { width: min(100%, 340px); height: 170px; border-radius: 20px; overflow: hidden; margin: 2px 0 2px 64px; }
+    .review-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .head { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 52px; height: 52px; border-radius: 16px; overflow: hidden; background: rgba(102, 183, 255, 0.12); flex-shrink: 0; }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .head strong { display: block; margin-bottom: 4px; font-size: 1rem; }
+    .muted { color: var(--muted); }
+    .quote { margin: 0; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { padding: 8px 12px; border-radius: 999px; background: rgba(45, 143, 228, 0.08); color: var(--sky-deep); font-size: 0.86rem; font-weight: 600; }
+    @keyframes blockReveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 680px) { .page { padding-top: 24px; } .card { padding: 18px; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar"><button class="close-btn" type="button" data-close-window aria-label="Закрыть">×</button></div>
+    <section class="grid">
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80" alt="Анна" /></div><div><strong>Анна</strong><div class="muted">Лиссабон · 4 дня</div></div></div><p class="quote">«Маршрут ощущался очень естественно: без гонки, с приятными паузами и точками, которые действительно хотелось прожить, а не просто отметить на карте.»</p><div class="tags"><span class="tag">Спокойный ритм</span><span class="tag">Локальные места</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=240&q=80" alt="Мария" /></div><div><strong>Мария</strong><div class="muted">Стамбул · гастрономический уикенд</div></div></div><p class="quote">«Мне понравилось, что рекомендации не были случайными. Поездка сложилась вокруг моего ритма, а сервис ещё и подсказал человека, с кем совпали интересы по формату отдыха.»</p><div class="tags"><span class="tag">Гастро-точки</span><span class="tag">Совпадение интересов</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1546961329-78bef0414d7c?auto=format&fit=crop&w=240&q=80" alt="София" /></div><div><strong>София</strong><div class="muted">Париж · 5 дней</div></div></div><p class="quote">«Самое ценное — маршрут не был перегружен. Я успела и посмотреть город, и просто посидеть в красивых местах, не чувствуя, что опаздываю к следующей точке.»</p><div class="tags"><span class="tag">Эстетичный маршрут</span><span class="tag">Без спешки</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=240&q=80" alt="Кира" /></div><div><strong>Кира</strong><div class="muted">Барселона · 6 дней</div></div></div><div class="review-photo"><img src="https://images.unsplash.com/photo-1523531294919-4bcd7c65e216?auto=format&fit=crop&w=1200&q=80" alt="Атмосферная улица для прогулки в Барселоне" /></div><p class="quote">«Очень понравилось, что день был собран не по туристическому шаблону. Мы шли от одного атмосферного района к другому, и всё ощущалось цельно.»</p><div class="tags"><span class="tag">Прогулки</span><span class="tag">Архитектура</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80" alt="Артём" /></div><div><strong>Артём</strong><div class="muted">Будапешт · 3 дня</div></div></div><p class="quote">«Сервис удачно подобрал баланс между обязательными точками и свободным временем. В итоге поездка получилась насыщенной, но без ощущения чек-листа.»</p><div class="tags"><span class="tag">Короткий формат</span><span class="tag">Удобная логистика</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80" alt="Елена" /></div><div><strong>Елена</strong><div class="muted">Лиссабон · 5 дней</div></div></div><p class="quote">«Меня особенно порадовало, что в маршруте были тихие районы и кафе, куда реально хотелось возвращаться. Это был очень мой темп.»</p><div class="tags"><span class="tag">Тихие районы</span><span class="tag">Кафе</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=240&q=80" alt="Наталья" /></div><div><strong>Наталья</strong><div class="muted">Прага · 4 дня</div></div></div><p class="quote">«Наконец-то маршрут, где мне не пришлось ничего перекраивать. Всё было уже собрано в понятном ритме: прогулка, пауза, красивый вид, ужин.»</p><div class="tags"><span class="tag">Паузы в пути</span><span class="tag">Видовые точки</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=240&q=80" alt="Ирина" /></div><div><strong>Ирина</strong><div class="muted">Вена · 4 дня</div></div></div><p class="quote">«Отдельное удовольствие — как менеджер учёл мой запрос на спокойный завтрак и неспешные переходы. Это сильно изменило ощущение от всей поездки.»</p><div class="tags"><span class="tag">Комфортный темп</span><span class="tag">Персональный подход</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=240&q=80" alt="Максим" /></div><div><strong>Максим</strong><div class="muted">Тбилиси · 7 дней</div></div></div><p class="quote">«Чувствовалось, что маршрут собран очень внимательно и с пониманием моего ритма. Особенно понравилось, сколько внимания уделили настроению поездки и переходам между точками.»</p><div class="tags"><span class="tag">Недельный маршрут</span><span class="tag">Настроение поездки</span></div></article>
+      <article class="card"><div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1502823403499-6ccfcf4fb453?auto=format&fit=crop&w=240&q=80" alt="Дина" /></div><div><strong>Дина</strong><div class="muted">Стамбул · 3 дня</div></div></div><p class="quote">«Понравилось, что гастрономические точки были встроены в маршрут естественно. Мы не бегали по адресам, а просто проживали день в красивой логике.»</p><div class="tags"><span class="tag">Гастрономия</span><span class="tag">Локальный ритм</span></div></article>
+    </section>
+  </main>
+  <script>
+    document.querySelector('[data-close-window]').addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      window.close();
+    });
+  </script>
+</body>
+</html>

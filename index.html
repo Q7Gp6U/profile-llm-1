@@ -24,10 +24,11 @@
       --radius-md: 18px;
       --container: 1160px;
       --header-offset: 108px;
+      --section-screen: calc(100vh - var(--header-offset));
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; scroll-padding-top: var(--header-offset); }
 
     body {
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -77,12 +78,82 @@
     }
 
     .section {
-      padding: 72px 0;
+      padding: 44px 0;
       scroll-margin-top: var(--header-offset);
+    }
+
+    #about > .container,
+    #planner > .container,
+    #examples > .container,
+    #blog > .container,
+    #reviews > .container,
+    #contacts > .container {
+      min-height: var(--section-screen);
+    }
+
+    #about > .container,
+    #planner > .container,
+    #examples > .container,
+    #blog > .container,
+    #reviews > .container,
+    #contacts > .container {
+      display: grid;
+      align-content: start;
+      padding-top: 18px;
+      padding-bottom: 18px;
     }
 
     .section.alt {
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.22));
+    }
+
+    #planner {
+      scroll-margin-top: 76px;
+      padding-top: 18px;
+      padding-bottom: 18px;
+    }
+
+    #planner .section-head {
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    #planner .plan-form,
+    #planner .route-preview {
+      padding: 16px;
+    }
+
+    #planner .plan-form {
+      gap: 12px;
+    }
+
+    #planner .form-grid {
+      gap: 8px;
+    }
+
+    #planner .input-shell {
+      padding: 10px 14px;
+    }
+
+    #examples,
+    #reviews {
+      padding-top: 18px;
+      padding-bottom: 18px;
+    }
+
+    #examples .section-head,
+    #reviews .section-head {
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    #reviews {
+      padding-top: 8px;
+      padding-bottom: 18px;
+    }
+
+    #reviews .section-head {
+      margin-bottom: 8px;
     }
 
     .section-head {
@@ -245,7 +316,7 @@
 
     .btn-primary {
       color: white;
-      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      background: linear-gradient(135deg, var(--sky-deep), #57a8f4 58%, var(--sky));
       box-shadow: 0 14px 28px rgba(45, 143, 228, 0.24);
     }
 
@@ -269,17 +340,45 @@
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
+      animation: blockReveal 0.7s ease both;
+      transition: transform 0.32s ease, box-shadow 0.32s ease, border-color 0.32s ease;
+    }
+
+    .section-head,
+    .planner-shell,
+    .social-proof-grid,
+    .contact-grid,
+    .blog-layout,
+    .grid-3,
+    .grid-4,
+    .grid-2 {
+      animation: blockReveal 0.7s ease both;
+    }
+
+    .card:hover,
+    .feature-card:hover,
+    .step-card:hover,
+    .route-card:hover,
+    .idea-card:hover,
+    .contact-card:hover,
+    .preview-card:hover,
+    .benefit-item:hover,
+    .route-preview:hover,
+    .plan-form:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 46px rgba(24, 50, 58, 0.12);
+      border-color: rgba(45, 143, 228, 0.12);
     }
 
     .hero {
-      padding: 42px 0 46px;
+      padding: 34px 0 38px;
     }
 
     .hero-grid {
       display: grid;
       grid-template-columns: 1.02fr 0.98fr;
       gap: 28px;
-      align-items: center;
+      align-items: start;
     }
 
     .hero-copy {
@@ -316,17 +415,182 @@
 
     .hero-visual {
       position: relative;
-      min-height: 390px;
-      display: flex;
+      min-height: 360px;
+      display: grid;
+      justify-items: end;
+      align-content: start;
+      gap: 14px;
+      padding-top: 4px;
+    }
+
+    .auth-trigger {
+      min-height: 0;
+      padding: 8px 14px;
+      margin-bottom: 18px;
+      border: 0;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      color: white;
+      font-size: 0.92rem;
+      font-weight: 700;
+      line-height: 1.2;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(45, 143, 228, 0.24);
+      transition: transform 0.24s ease, box-shadow 0.24s ease;
+    }
+
+    .auth-trigger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 32px rgba(45, 143, 228, 0.28);
+    }
+
+    body.modal-open {
+      overflow: hidden;
+    }
+
+    .auth-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 220;
+      display: none;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: center;
+      padding: 24px 16px;
+      background: rgba(15, 30, 40, 0.42);
+      backdrop-filter: blur(10px);
+    }
+
+    .auth-modal.is-open {
+      display: flex;
+    }
+
+    .auth-dialog {
+      width: min(100%, 420px);
+      padding: 24px;
+      border-radius: 24px;
+      background: var(--surface-strong);
+      border: 1px solid rgba(24, 50, 58, 0.08);
+      box-shadow: 0 26px 52px rgba(16, 34, 40, 0.16);
+      display: grid;
+      gap: 18px;
+    }
+
+    .auth-head {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .auth-head strong {
+      display: block;
+      font-size: 1.4rem;
+      line-height: 1.15;
+    }
+
+    .auth-head p {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .auth-close {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--muted);
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .auth-tab {
+      min-height: 48px;
+      border: 1px solid rgba(24, 50, 58, 0.08);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.84);
+      color: var(--muted);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.24s ease, color 0.24s ease, border-color 0.24s ease;
+    }
+
+    .auth-tab.is-active {
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      border-color: transparent;
+      color: white;
+    }
+
+    .auth-panel {
+      display: none;
+    }
+
+    .auth-panel.is-active {
+      display: block;
+    }
+
+    .auth-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .auth-field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .auth-field span {
+      font-size: 0.87rem;
+      color: var(--muted);
+    }
+
+    .auth-field input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 14px;
+      border: 1px solid rgba(24, 50, 58, 0.08);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--text);
+      outline: none;
+    }
+
+    .auth-field input:focus {
+      border-color: rgba(45, 143, 228, 0.34);
+      box-shadow: 0 0 0 4px rgba(45, 143, 228, 0.12);
+    }
+
+    .auth-submit {
+      min-height: 50px;
+      margin-top: 2px;
+      border: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(45, 143, 228, 0.22);
+    }
+
+    .auth-note {
+      color: var(--muted);
+      font-size: 0.84rem;
     }
 
     .preview-card {
       position: relative;
       z-index: 1;
       margin-left: auto;
-      width: min(100%, 400px);
+      margin-top: 8px;
+      width: min(100%, 468px);
       padding: 22px;
       background: var(--surface-strong);
     }
@@ -339,15 +603,32 @@
     .preview-copy {
       margin-top: 6px;
       color: var(--muted);
-      font-size: 0.94rem;
-      max-width: 28ch;
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: none;
+      text-wrap: pretty;
+    }
+
+    .preview-copy-line {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-start;
+      gap: 8px;
+    }
+
+    .preview-copy-line > span:last-child {
+      margin-left: auto;
+    }
+
+    .preview-copy-rest {
+      display: block;
+      text-align: justify;
+      text-justify: inter-word;
+      hyphens: auto;
     }
 
     .preview-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      display: block;
       margin-bottom: 18px;
       padding-bottom: 14px;
       border-bottom: 1px solid var(--line);
@@ -391,7 +672,7 @@
     }
 
     .preview-media {
-      min-height: 184px;
+      min-height: 220px;
       border-radius: 18px;
       background:
         linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.1)),
@@ -400,7 +681,7 @@
     }
 
     .preview-summary {
-      padding: 14px;
+      padding: 16px 18px;
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.9);
       border: 1px solid rgba(24, 50, 58, 0.06);
@@ -421,7 +702,8 @@
       align-items: center;
       gap: 8px;
       color: var(--muted);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
+      white-space: nowrap;
     }
 
     .preview-points span::before {
@@ -441,12 +723,12 @@
     .mini-tag {
       display: inline-flex;
       align-items: center;
-      padding: 8px 12px;
+      padding: 7px 10px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.92);
       border: 1px solid rgba(24, 50, 58, 0.06);
       color: var(--muted);
-      font-size: 0.88rem;
+      font-size: 0.84rem;
     }
 
     .preview-list {
@@ -461,10 +743,10 @@
       align-items: start;
       justify-content: space-between;
       gap: 12px;
-      padding: 10px 0;
+      padding: 8px 0;
       border-bottom: 1px solid rgba(24, 50, 58, 0.06);
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .preview-row:last-child,
@@ -519,42 +801,43 @@
     .planner-shell {
       display: grid;
       grid-template-columns: 1.08fr 0.92fr;
-      gap: 20px;
-      align-items: start;
+      gap: 16px;
+      align-items: stretch;
     }
 
     .plan-form,
     .route-preview {
-      padding: 24px;
+      padding: 18px;
     }
 
     .plan-form {
       display: grid;
-      gap: 18px;
+      gap: 14px;
     }
 
     .form-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
+      gap: 10px;
     }
 
     .input-shell {
-      padding: 16px;
-      border-radius: 18px;
+      padding: 12px 14px;
+      border-radius: 16px;
       border: 1px solid rgba(24, 50, 58, 0.07);
       background: rgba(255, 255, 255, 0.86);
     }
 
     .form-label {
       display: block;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: 0.86rem;
     }
 
     .input-shell input,
     .input-shell select,
+    .input-shell textarea,
     .contact-form textarea,
     .contact-form input {
       width: 100%;
@@ -565,23 +848,177 @@
     }
 
     .helper-note {
-      padding: 16px 18px;
-      border-radius: 18px;
+      padding: 12px 14px;
+      border-radius: 16px;
       background: rgba(102, 183, 255, 0.08);
       border: 1px solid rgba(45, 143, 228, 0.12);
       color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .route-options-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .route-option-check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(102, 183, 255, 0.08);
+      border: 1px solid rgba(45, 143, 228, 0.12);
+      color: var(--text);
+    }
+
+    .route-option-check input {
+      accent-color: var(--sky-deep);
+      width: 16px;
+      height: 16px;
+      flex: 0 0 auto;
+    }
+
+    .route-step {
+      display: none;
+      gap: 14px;
+    }
+
+    .route-step.is-active {
+      display: grid;
+    }
+
+    .route-step-note {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .route-final-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .route-final-form .input-shell input,
+    .route-final-form .input-shell textarea,
+    .contact-form input,
+    .contact-form textarea,
+    .auth-form input {
+      color: var(--text);
+    }
+
+    .route-final-form .input-shell input::placeholder,
+    .route-final-form .input-shell textarea::placeholder,
+    .contact-form input::placeholder,
+    .contact-form textarea::placeholder,
+    .auth-form input::placeholder {
+      color: #a7b3b9;
+    }
+
+    .route-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .route-next {
+      min-height: 50px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(45, 143, 228, 0.22);
+    }
+
+    .route-back {
+      min-height: 50px;
+      padding: 0 20px;
+      border: 1px solid rgba(24, 50, 58, 0.08);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--muted);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .success-message {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(98, 178, 133, 0.12);
+      border: 1px solid rgba(55, 138, 96, 0.16);
+      color: var(--green-deep);
+      font-weight: 600;
+    }
+
+    .success-message.is-visible {
+      display: block;
+    }
+
+    .route-submit.is-hidden {
+      display: none;
+    }
+
+    .success-dialog {
+      width: min(100%, 520px);
+      padding: 18px 18px 20px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      color: white;
+      box-shadow: 0 26px 52px rgba(16, 34, 40, 0.18);
+    }
+
+    .success-head {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .success-close {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.14);
+      color: white;
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .success-line {
+      white-space: nowrap;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+
+    .route-submit {
+      min-height: 50px;
+      margin-top: 6px;
+      border: 0;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--sky-deep), #57a8f4 58%, var(--sky));
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(45, 143, 228, 0.22);
     }
 
     .route-preview {
       display: grid;
-      gap: 16px;
+      height: 100%;
+      align-content: start;
+      gap: 12px;
       background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(247, 252, 255, 0.82));
     }
 
     .route-preview .map-shot {
-      min-height: 220px;
-      border-radius: 20px;
-      padding: 18px;
+      min-height: 180px;
+      border-radius: 18px;
+      padding: 14px;
       display: grid;
       align-content: space-between;
       background:
@@ -630,12 +1067,36 @@
       padding-top: 8px;
     }
 
+    .blog-carousel {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 14px;
+      align-items: center;
+      width: 100%;
+    }
+
     .blog-cards {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-flow: column;
+      grid-auto-columns: calc((100% - 18px) / 2);
       gap: 18px;
-      max-width: 760px;
+      max-width: 100%;
       justify-self: end;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      padding-bottom: 4px;
+    }
+
+    #blog {
+      padding-bottom: 36px;
+      padding-top: 18px;
+    }
+
+    .blog-cards::-webkit-scrollbar {
+      display: none;
     }
 
     .blog-card {
@@ -643,7 +1104,28 @@
       display: grid;
       gap: 16px;
       height: 100%;
-      max-width: 370px;
+      width: 100%;
+      scroll-snap-align: start;
+      transition: transform 0.32s ease, box-shadow 0.32s ease, border-color 0.32s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 46px rgba(24, 50, 58, 0.12);
+      border-color: rgba(45, 143, 228, 0.12);
+    }
+
+    .blog-next,
+    .blog-prev {
+      width: 54px;
+      height: 54px;
+      border: 0;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      color: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+      box-shadow: 0 14px 28px rgba(45, 143, 228, 0.22);
     }
 
     .blog-card .card-cover {
@@ -661,6 +1143,25 @@
       font-size: 0.93rem;
     }
 
+    .article-link {
+      color: var(--sky-deep);
+      font-weight: 700;
+      background: none;
+      border: 0;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .article-modal-body {
+      display: grid;
+      gap: 12px;
+      color: var(--muted);
+    }
+
+    .article-modal-body p {
+      margin: 0;
+    }
+
     .social-proof-grid {
       display: grid;
       grid-template-columns: 1.05fr 0.95fr;
@@ -668,47 +1169,159 @@
       align-items: start;
     }
 
+    .proof-group {
+      display: grid;
+      gap: 12px;
+    }
+
+    .proof-group:last-child {
+      justify-items: end;
+    }
+
+    .proof-group-head {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 12px;
+      padding: 0 2px;
+    }
+
+    .proof-group-head strong {
+      font-size: 1rem;
+    }
+
     .reviews-stack,
     .companions-stack {
       display: grid;
-      gap: 18px;
+      gap: 12px;
+    }
+
+    .reviews-stack {
+      position: relative;
+      margin-top: 8px;
     }
 
     .quote-card,
     .companion-card {
-      padding: 22px;
+      padding: 16px;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
+      position: relative;
+      z-index: 1;
+      transition: transform 0.28s ease, box-shadow 0.28s ease, z-index 0.28s ease;
     }
 
-    .quote-card p {
+    .quote-card:hover,
+    .companion-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 46px rgba(24, 50, 58, 0.14);
+      z-index: 4;
+    }
+
+    .quote-card.is-overlay {
+      margin-top: -34px;
+      margin-left: 28px;
+      width: calc(100% - 28px);
+      z-index: 2;
+    }
+
+    .match-cta {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      gap: 14px;
+      width: min(100%, 360px);
+      aspect-ratio: 1 / 1;
+      padding: 24px;
+      border: 1px solid rgba(45, 143, 228, 0.14);
+      border-radius: 28px;
+      text-align: left;
+      cursor: pointer;
       color: var(--text);
-      font-size: 1rem;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(234, 246, 255, 0.92));
+      box-shadow: 0 16px 34px rgba(45, 143, 228, 0.14), 0 0 34px rgba(102, 183, 255, 0.18);
+      align-content: space-between;
+      transition: transform 0.28s ease, box-shadow 0.28s ease;
     }
 
-    .quote-foot {
-      display: flex;
+    .match-cta::after {
+      content: "";
+      position: absolute;
+      inset: -30% -10% auto auto;
+      width: 190px;
+      height: 190px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(102, 183, 255, 0.28), rgba(102, 183, 255, 0));
+      filter: blur(2px);
+    }
+
+    .match-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 40px rgba(45, 143, 228, 0.18), 0 0 42px rgba(102, 183, 255, 0.22);
+    }
+
+    .match-cta-badge,
+    .match-cta-action {
+      position: relative;
+      z-index: 1;
+      width: fit-content;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(45, 143, 228, 0.08);
+      font-size: 0.88rem;
+      font-weight: 700;
+    }
+
+    .match-cta strong,
+    .match-cta-symbol {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+    }
+
+    .match-cta strong {
+      max-width: 25ch;
+      font-size: 1.26rem;
+      line-height: 1.2;
+    }
+
+    .match-cta-symbol {
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 16px;
-      color: var(--muted);
-      font-size: 0.93rem;
+      gap: 8px;
+      color: var(--sky-deep);
+      font-weight: 700;
     }
 
+    .match-cta-symbol::before {
+      content: "3";
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--sky-deep), var(--sky));
+      box-shadow: 0 12px 24px rgba(45, 143, 228, 0.22);
+    }
+
+    .quote-head,
     .companion-head {
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
     }
 
+    .quote-avatar,
     .companion-avatar {
       width: 50px;
       height: 50px;
       border-radius: 16px;
+      overflow: hidden;
+      flex-shrink: 0;
       display: grid;
       place-items: center;
       font-weight: 800;
@@ -716,17 +1329,43 @@
       background: linear-gradient(145deg, rgba(102, 183, 255, 0.2), rgba(245, 154, 199, 0.14));
     }
 
+    .quote-avatar img,
+    .companion-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
+
+    .quote-card p {
+      color: var(--text);
+      font-size: 0.88rem;
+      line-height: 1.42;
+    }
+
     .companion-tags {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-top: 14px;
+      margin-top: 8px;
     }
 
+    .quote-note,
     .companion-note {
-      margin-top: 10px;
+      margin-top: 4px;
       color: var(--muted);
       font-size: 0.94rem;
+    }
+
+    .quote-note {
+      font-size: 0.88rem;
+      line-height: 1.42;
+    }
+
+    .reviews-more {
+      width: fit-content;
+      justify-self: end;
+      margin-top: 4px;
     }
 
     @keyframes globeSpin {
@@ -738,6 +1377,17 @@
       0% { offset-distance: 0%; transform: scale(0.92); }
       50% { offset-distance: 55%; transform: scale(1); }
       100% { offset-distance: 100%; transform: scale(0.92); }
+    }
+
+    @keyframes blockReveal {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .contact-grid {
@@ -761,6 +1411,58 @@
     .contact-form textarea {
       min-height: 130px;
       resize: vertical;
+    }
+
+    .contact-main-card {
+      width: 100%;
+      max-width: 560px;
+      margin-left: auto;
+    }
+
+    .contact-info-column {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+      max-width: 560px;
+      margin-left: auto;
+    }
+
+    .contact-info-item {
+      display: grid;
+      gap: 6px;
+    }
+
+    .contact-info-item .icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 8px;
+    }
+
+    .contact-info-item p {
+      color: var(--muted);
+    }
+
+    .booking-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .booking-error {
+      display: none;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255, 107, 107, 0.10);
+      border: 1px solid rgba(255, 107, 107, 0.18);
+      color: #c84444;
+      font-weight: 600;
+    }
+
+    .booking-error.is-visible {
+      display: block;
+    }
+
+    .auth-head.is-hidden {
+      display: none;
     }
 
     footer {
@@ -794,9 +1496,12 @@
 
       .hero-visual {
         min-height: 380px;
+        justify-items: stretch;
       }
 
+      .auth-trigger,
       .preview-card {
+        width: 100%;
         margin-left: 0;
       }
     }
@@ -807,7 +1512,40 @@
       }
 
       .section {
-        padding: 58px 0;
+        padding: 34px 0;
+      }
+
+      #about > .container,
+      #planner > .container,
+      #examples > .container,
+      #blog > .container,
+      #reviews > .container,
+      #contacts > .container {
+        min-height: auto;
+      }
+
+      #planner {
+        padding-top: 40px;
+      }
+
+      #examples,
+      #reviews {
+        padding-top: 24px;
+        padding-bottom: 24px;
+      }
+
+      #reviews {
+        padding-top: 0;
+        padding-bottom: 18px;
+      }
+
+      #examples {
+        padding-top: 22px;
+      }
+
+      #blog {
+        padding-top: 26px;
+        padding-bottom: 48px;
       }
 
       .nav-wrap {
@@ -836,7 +1574,11 @@
       }
 
       .hero-visual {
-        min-height: 360px;
+        min-height: auto;
+      }
+
+      .auth-dialog {
+        padding: 20px;
       }
 
       .preview-card,
@@ -855,6 +1597,10 @@
       .lead {
         max-width: 100%;
       }
+
+      .preview-points span {
+        white-space: normal;
+      }
     }
   </style>
 </head>
@@ -869,7 +1615,6 @@
         <a href="#hero">Главная</a>
         <a href="#about">О&nbsp;сервисе</a>
         <a href="#planner">Сборка маршрута</a>
-        <a href="#how-it-works">Как это работает</a>
         <a href="#examples">Примеры</a>
         <a href="#blog">Блог</a>
         <a href="#reviews">Отзывы</a>
@@ -885,23 +1630,21 @@
           <span class="eyebrow">Персональный маршрут • Локальные места • Попутчики по&nbsp;интересам</span>
           <h1>Маршрут<br />под твой ритм,<br />интересы<br />и&nbsp;бюджет</h1>
           <div class="hero-sub">Выбери направление, формат отдыха<br />и&nbsp;темп поездки — сервис соберет<br />маршрут без шаблонных туров.</div>
-          <p class="lead">Помогаем собрать поездку под тебя: с&nbsp;локальными местами, понятной логикой маршрута и&nbsp;возможностью найти попутчика по&nbsp;интересам.</p>
-
           <div class="btn-row">
             <a class="btn btn-primary" href="#planner">Подобрать маршрут</a>
-            <a class="btn btn-secondary" href="#how-it-works">Как это работает</a>
           </div>
 
         </div>
 
-        <div class="hero-visual" aria-hidden="true">
+        <div class="hero-visual">
+          <button class="auth-trigger" type="button" data-auth-open>Вход • Регистрация</button>
+
           <article class="preview-card">
             <div class="preview-head">
               <div>
                 <strong>Как выглядит маршрут</strong>
-                <div class="preview-copy">Не просто список мест, а&nbsp;спокойно собранный день:<br />где начать утро, что оставить на&nbsp;день и&nbsp;чем завершить маршрут без спешки.</div>
+                <div class="preview-copy"><span class="preview-copy-line"><span>Не просто список мест, а</span><span>спокойно собранный день:</span></span><span class="preview-copy-rest">где начать утро, что оставить на&nbsp;день и&nbsp;чем завершить маршрут без спешки.</span></div>
               </div>
-              <div class="window-dots"><span></span><span></span><span></span></div>
             </div>
 
             <div class="preview-layout">
@@ -910,9 +1653,9 @@
               <div class="preview-summary">
                 <strong>Что в&nbsp;маршруте</strong>
                 <div class="preview-points">
-                  <span>Утро, день и&nbsp;вечер<br />выстроены в&nbsp;удобной логике</span>
-                  <span>Есть время<br />и&nbsp;на ключевые точки, и&nbsp;на спонтанность</span>
-                  <span>Маршрут<br />легко адаптировать по&nbsp;настроению</span>
+                  <span>Утро, день и&nbsp;вечер выстроены в&nbsp;удобной логике</span>
+                  <span>Есть время и&nbsp;на ключевые точки, и&nbsp;на спонтанность</span>
+                  <span>Маршрут легко адаптировать по&nbsp;настроению</span>
                 </div>
               </div>
             </div>
@@ -971,6 +1714,15 @@
                   <option>Лиссабон</option>
                   <option>Стамбул</option>
                   <option>Тбилиси</option>
+                  <option>Париж</option>
+                  <option>Рим</option>
+                  <option>Барселона</option>
+                  <option>Будапешт</option>
+                  <option>Прага</option>
+                  <option>Батуми</option>
+                  <option>Ереван</option>
+                  <option>Берлин</option>
+                  <option>Вена</option>
                 </select>
               </label>
               <label class="input-shell">
@@ -979,6 +1731,9 @@
                   <option>Городской уикенд</option>
                   <option>Спокойный отдых</option>
                   <option>Гастрономическая поездка</option>
+                  <option>Экстримальный</option>
+                  <option>Трекинг</option>
+                  <option>Комбинированный</option>
                 </select>
               </label>
               <label class="input-shell">
@@ -987,6 +1742,7 @@
                   <option>Средний</option>
                   <option>Экономный</option>
                   <option>Комфортный</option>
+                  <option>Премиальный</option>
                 </select>
               </label>
               <label class="input-shell">
@@ -995,6 +1751,9 @@
                   <option>4&nbsp;дня</option>
                   <option>7&nbsp;дней</option>
                   <option>10&nbsp;дней</option>
+                  <option>14&nbsp;дней</option>
+                  <option>Более 14&nbsp;дней</option>
+                  <option>Более 30&nbsp;дней</option>
                 </select>
               </label>
               <label class="input-shell" style="grid-column: 1 / -1;">
@@ -1007,8 +1766,8 @@
               </label>
             </div>
 
-            <div class="helper-note">Дополнительные настройки — интересы, тематические точки и&nbsp;особые пожелания — можно добавить на&nbsp;следующем шаге.</div>
-            <button class="btn btn-primary" type="button">Показать маршрут</button>
+            <div class="helper-note">Дополнительные опции поездки и&nbsp;особые пожелания — можно добавить на&nbsp;следующем шаге.</div>
+            <button class="btn btn-primary" type="button" data-route-open>Собрать маршрут</button>
           </div>
 
           <aside class="route-preview">
@@ -1036,47 +1795,19 @@
       </div>
     </section>
 
-    <section class="section alt" id="how-it-works">
-      <div class="container">
-        <div class="section-head">
-          <span class="eyebrow">Как это работает</span>
-          <h2>Как работает сервис</h2>
-          <p class="lead">Сначала выбираешь направление и&nbsp;формат поездки, затем настраиваешь темп и&nbsp;интересы, после этого получаешь маршрут и&nbsp;рекомендации.</p>
-        </div>
-
-        <div class="grid-3">
-          <article class="step-card">
-            <div class="icon">1</div>
-            <h3>Выбери основу поездки</h3>
-            <p class="muted">Укажи город, формат отдыха, бюджет и&nbsp;длительность.</p>
-          </article>
-          <article class="step-card">
-            <div class="icon">2</div>
-            <h3>Настрой маршрут под себя</h3>
-            <p class="muted">Выбери темп поездки, интересы и&nbsp;дополнительные опции.</p>
-          </article>
-          <article class="step-card">
-            <div class="icon">3</div>
-            <h3>Получите готовый сценарий</h3>
-            <p class="muted">Сервис покажет маршрут, места и&nbsp;подходящие варианты по&nbsp;твоему запросу.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <section class="section" id="examples">
       <div class="container">
         <div class="section-head">
           <span class="eyebrow">Примеры маршрутов</span>
-          <h2>Примеры маршрутов и&nbsp;мест</h2>
-          <p class="lead">Несколько компактных сценариев, чтобы показать логику подбора без лишних экранов и&nbsp;перегруженных деталей.</p>
+          <h2>Примеры маршрутов и&nbsp;мест для вдохновения</h2>
+          <p class="lead">Несколько компактных сценариев, чтобы показать логику подбора.</p>
         </div>
 
         <div class="grid-3">
           <article class="route-card">
             <div class="card-cover"><img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?auto=format&fit=crop&w=1200&q=80" alt="Прогулка у моря" /></div>
             <div class="meta">
-              <span class="mini-tag">3&nbsp;дня</span>
+                <span class="mini-tag">7&nbsp;дней</span>
               <span class="mini-tag">Спокойный темп</span>
             </div>
             <div>
@@ -1117,12 +1848,13 @@
         <div class="blog-intro">
           <div class="section-head" style="margin-bottom: 0;">
             <span class="eyebrow">Блог / статьи</span>
-            <h2>Контент для&nbsp;вдохновения:<br />места, истории и&nbsp;идеи<br />для&nbsp;личного маршрута</h2>
+            <h2>Контент для&nbsp;вдохновения:<br />истории и&nbsp;идеи для&nbsp;личного маршрута</h2>
           </div>
-          <a class="btn btn-secondary" href="#contacts" style="width: fit-content;">Смотреть все материалы</a>
         </div>
 
-        <div class="blog-cards">
+        <div class="blog-carousel">
+        <button class="blog-prev" type="button" data-blog-prev aria-label="Показать предыдущие статьи">←</button>
+        <div class="blog-cards" data-blog-cards>
           <article class="route-card blog-card">
             <div class="card-cover"><img src="./Photo1.png" alt="Теплый городской сюжет для вдохновения поездкой" /></div>
             <div class="meta">
@@ -1133,7 +1865,7 @@
               <h3>Как увидеть город не&nbsp;как турист, а&nbsp;как гость</h3>
               <p class="muted">Собрали теплый сценарий знакомства с&nbsp;городом: места для неспешных прогулок, уютных остановок и&nbsp;того самого чувства, что поездка действительно про тебя.</p>
             </div>
-            <div class="blog-card-foot"><span>7 минут чтения</span><span>Открыть →</span></div>
+            <div class="blog-card-foot"><button class="article-link" type="button" data-article-open="guest">Открыть →</button></div>
           </article>
 
           <article class="route-card blog-card">
@@ -1146,8 +1878,62 @@
               <h3>Нетуристические кафе, куда хочется возвращаться</h3>
               <p class="muted">Это подборка мест с&nbsp;настроением: для позднего завтрака, спокойного вечера и&nbsp;небольших пауз, которые делают маршрут живым и&nbsp;по-настоящему личным.</p>
             </div>
-            <div class="blog-card-foot"><span>12 адресов</span><span>Смотреть →</span></div>
+            <div class="blog-card-foot"><button class="article-link" type="button" data-article-open="cafes">Открыть →</button></div>
           </article>
+
+          <article class="route-card blog-card">
+            <div class="card-cover"><img src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1200&q=80" alt="Вечерний город с огнями" /></div>
+            <div class="meta">
+              <span class="mini-tag">гайд</span>
+              <span class="mini-tag">вечерний маршрут</span>
+            </div>
+            <div>
+              <h3>Город после заката: маршруты для спокойного вечера</h3>
+              <p class="muted">Подборка мест для мягкого темпа: тихие набережные, панорамные точки и&nbsp;кафе, куда хочется зайти без спешки.</p>
+            </div>
+            <div class="blog-card-foot"><button class="article-link" type="button" data-article-open="evening">Открыть →</button></div>
+          </article>
+
+          <article class="route-card blog-card">
+            <div class="card-cover"><img src="./Ph4.png" alt="Рынок в арабской стране" /></div>
+            <div class="meta">
+              <span class="mini-tag">подборка</span>
+              <span class="mini-tag">локальная еда</span>
+            </div>
+            <div>
+              <h3>Как встроить локальную гастрономию в маршрут</h3>
+              <p class="muted">Рассказываем, как вписать рынки, лавки и небольшие гастробары в день так, чтобы гастрономия усиливала маршрут, а не дробила его.</p>
+            </div>
+            <div class="blog-card-foot"><button class="article-link" type="button" data-article-open="food">Открыть →</button></div>
+          </article>
+
+          <article class="route-card blog-card">
+            <div class="card-cover"><img src="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=1200&q=80" alt="Городская улица без туристической толпы" /></div>
+            <div class="meta">
+              <span class="mini-tag">статья</span>
+              <span class="mini-tag">нетуристические районы</span>
+            </div>
+            <div>
+              <h3>Как выбирать районы для прогулок, если хочется увидеть настоящий ритм города</h3>
+              <p class="muted">Рассказываем, как строить маршрут не по открыткам, а по местам, где город ощущается живым и естественным.</p>
+            </div>
+            <div class="blog-card-foot"><button class="article-link" type="button" data-article-open="districts">Открыть →</button></div>
+          </article>
+
+          <article class="route-card blog-card">
+            <div class="card-cover"><img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80" alt="Обсуждение поездки с персональным менеджером" /></div>
+            <div class="meta">
+              <span class="mini-tag">советы</span>
+              <span class="mini-tag">планирование</span>
+            </div>
+            <div>
+              <h3>Что обсудить с персональным менеджером перед поездкой</h3>
+              <p class="muted">Короткий чек-лист по бюджету, темпу, интересам и важным деталям, который помогает собрать маршрут точнее и спокойнее.</p>
+            </div>
+            <div class="blog-card-foot"><button class="article-link" type="button" data-article-open="manager">Открыть →</button></div>
+          </article>
+        </div>
+        <button class="blog-next" type="button" data-blog-next aria-label="Показать следующие статьи">→</button>
         </div>
       </div>
     </section>
@@ -1157,54 +1943,51 @@
         <div class="section-head">
           <span class="eyebrow">Отзывы и рекомендации</span>
           <h2>Что говорят путешественники и&nbsp;кого сервис рекомендует в&nbsp;попутчики</h2>
-          <p class="lead">Здесь видно не&nbsp;только впечатления от&nbsp;маршрутов, но и&nbsp;то, как сервис помогает находить людей с&nbsp;похожим темпом, интересами и&nbsp;форматом поездки.</p>
         </div>
 
-        <div class="social-proof-grid">
-          <div class="reviews-stack">
-            <article class="quote-card">
-              <p>«Маршрут ощущался очень естественно: без гонки, с&nbsp;приятными паузами и&nbsp;точками, которые действительно хотелось прожить, а&nbsp;не просто отметить на&nbsp;карте.»</p>
-              <div class="quote-foot"><strong>Анна</strong><span>Лиссабон · 4 дня</span></div>
-            </article>
+          <div class="social-proof-grid">
+            <div class="proof-group">
+              <div class="reviews-stack">
+                <article class="quote-card">
+                  <div class="quote-head">
+                    <div class="quote-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80" alt="Анна" /></div>
+                    <div>
+                      <strong>Анна</strong>
+                      <div class="muted">Лиссабон · 4 дня</div>
+                    </div>
+                  </div>
+                  <p class="quote-note">«Маршрут ощущался очень естественно: без гонки, с&nbsp;приятными паузами и&nbsp;точками, которые действительно хотелось прожить, а&nbsp;не просто отметить на&nbsp;карте.»</p>
+                  <div class="companion-tags">
+                    <span class="mini-tag">Спокойный ритм</span>
+                    <span class="mini-tag">Локальные места</span>
+                  </div>
+                </article>
 
-            <article class="quote-card">
-              <p>«Мне понравилось, что рекомендации не были случайными. Поездка сложилась вокруг моего ритма, а&nbsp;сервис ещё и&nbsp;подсказал человека, с&nbsp;кем совпали интересы по&nbsp;формату отдыха.»</p>
-              <div class="quote-foot"><strong>Мария</strong><span>Стамбул · гастрономический уикенд</span></div>
-            </article>
-          </div>
+                <article class="quote-card is-overlay">
+                  <div class="quote-head">
+                    <div class="quote-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=240&q=80" alt="Мария" /></div>
+                    <div>
+                      <strong>Мария</strong>
+                      <div class="muted">Стамбул · гастрономический уикенд</div>
+                    </div>
+                  </div>
+                  <p class="quote-note">«Мне понравилось, что рекомендации не были случайными. Поездка сложилась вокруг моего ритма, а&nbsp;сервис ещё и&nbsp;подсказал человека, с&nbsp;кем совпали интересы по&nbsp;формату отдыха.»</p>
+                  <div class="companion-tags">
+                    <span class="mini-tag">Гастро-точки</span>
+                    <span class="mini-tag">Совпадение интересов</span>
+                  </div>
+                </article>
+              </div>
+              <a class="btn btn-primary reviews-more" href="./reviews.html" target="_blank" rel="noopener">Читать все отзывы</a>
+            </div>
 
-          <div class="companions-stack">
-            <article class="companion-card">
-              <div class="companion-head">
-                <div class="companion-avatar">Е</div>
-                <div>
-                  <strong>Елена, 29</strong>
-                  <div class="muted">Спокойный городской отдых</div>
-                </div>
-              </div>
-              <p class="companion-note">Любит прогулки по районам, небольшие музеи, атмосферные кафе и&nbsp;маршруты без перегруженного расписания.</p>
-              <div class="companion-tags">
-                <span class="mini-tag">Лиссабон</span>
-                <span class="mini-tag">4–5 дней</span>
-                <span class="mini-tag">Средний бюджет</span>
-              </div>
-            </article>
-
-            <article class="companion-card">
-              <div class="companion-head">
-                <div class="companion-avatar">И</div>
-                <div>
-                  <strong>Ирина, 31</strong>
-                  <div class="muted">Гастрономические поездки</div>
-                </div>
-              </div>
-              <p class="companion-note">Ищет поездки с&nbsp;локальной едой, вечерними прогулками и&nbsp;живыми местами, где можно почувствовать настоящий ритм города.</p>
-              <div class="companion-tags">
-                <span class="mini-tag">Стамбул</span>
-                <span class="mini-tag">Уикенд</span>
-                <span class="mini-tag">Интерес к&nbsp;локальным местам</span>
-              </div>
-            </article>
+            <div class="proof-group">
+              <a class="match-cta" href="./recommendations.html" target="_blank" rel="noopener">
+                <span class="match-cta-badge">Персональная подборка</span>
+                <strong>Вам уже подобрали персональные рекомендации в&nbsp;попутчики</strong>
+                <span class="match-cta-symbol">Просмотр</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -1212,50 +1995,204 @@
 
     <section class="section" id="contacts">
       <div class="container contact-grid">
-        <div class="contact-card">
-          <span class="eyebrow">Финальный шаг</span>
-          <h2 style="margin-bottom: 16px; max-width: 14ch;">Оставьте заявку и мы поможем собрать маршрут</h2>
-          <p class="lead">Расскажите, куда хотите поехать и&nbsp;какой формат отдыха вам близок. Мы свяжемся с&nbsp;вами и&nbsp;обсудим подходящий сценарий поездки.</p>
-
-          <div class="contact-stack">
-            <div class="contact-card" style="padding: 18px; box-shadow: none; background: rgba(255, 255, 255, 0.62);">
-              <div class="icon">✉</div>
-              <strong>Email</strong>
-              <p class="muted">hello@travel-project.ru</p>
-            </div>
-            <div class="contact-card" style="padding: 18px; box-shadow: none; background: rgba(255, 255, 255, 0.62);">
-              <div class="icon">⌁</div>
-              <strong>Телеграм</strong>
-              <p class="muted">@travel_project</p>
-            </div>
-          </div>
+        <div class="section-head" style="margin-bottom: 0;">
+          <span class="eyebrow">Контакты</span>
+          <h2>Приезжайте в наш комфортный офис,<br />и персональный менеджер поможет собрать путешествие вашей мечты</h2>
+          <p class="lead">Если удобнее обсудить поездку лично, мы будем рады встретить вас<br />в офисе, спокойно разобрать пожелания и подобрать маршрут под ваш темп, бюджет и формат отдыха.</p>
+          <p class="lead"><strong>Мы работаем ежедневно с 10:00 до 21:00.</strong></p>
         </div>
 
-        <div class="contact-card">
-          <span class="eyebrow" style="margin-bottom: 16px;">Оставить заявку</span>
-          <form class="contact-form">
-            <label class="input-shell">
-              <span class="form-label">Ваше имя</span>
-              <input type="text" value="Анна" />
-            </label>
-            <label class="input-shell">
-              <span class="form-label">Телеграм или email</span>
-              <input type="text" value="anna@example.com" />
-            </label>
-            <label class="input-shell">
-              <span class="form-label">Куда хотите поехать</span>
-              <input type="text" value="Лиссабон или Стамбул" />
-            </label>
-            <label class="input-shell">
-              <span class="form-label">Комментарий</span>
-              <textarea>Хочу спокойный маршрут с локальными местами, понятной логикой перемещений и возможностью поехать с попутчиком.</textarea>
-            </label>
-            <button class="btn btn-primary" type="button">Оставить заявку</button>
-          </form>
+        <div class="contact-info-column">
+          <div class="contact-info-item">
+            <div class="icon">⌂</div>
+            <strong>Офис в Москве</strong>
+            <p>Москва, ул. Лесная, 17, бизнес-центр «Северный двор», 4 этаж,<br />офис 412.</p>
+            <p>5 минут пешком от метро «Белорусская», выход к Лесной улице;<br />ориентир — кофейня «Яркий момент».</p>
+          </div>
+          <div class="contact-info-item">
+            <div class="icon">✆</div>
+            <strong>Контакты для связи</strong>
+            <p>Телефон: +7 (495) 555-28-41</p>
+            <p>Email: office@travel-project.ru</p>
+            <p>Мессенджер: @travel_project_support</p>
+          </div>
+          <div class="contact-info-item">
+            <div class="icon">⏱</div>
+            <strong>Запись ко времени</strong>
+            <p>Для вашего удобства вы можете заранее записаться на встречу<br />с менеджером в нашем офисе.</p>
+          </div>
+          <button class="btn btn-primary" type="button" data-booking-open style="margin-top: 18px; width: fit-content;">Записаться</button>
         </div>
       </div>
     </section>
   </main>
+
+  <div class="auth-modal" id="authModal" aria-hidden="true">
+    <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div class="auth-head">
+        <div>
+          <strong id="authTitle">Вход и регистрация</strong>
+          <p>Открой доступ к сохранённым маршрутам, подборкам и будущим поездкам.</p>
+        </div>
+        <button class="auth-close" type="button" data-auth-close aria-label="Закрыть">×</button>
+      </div>
+
+      <div class="auth-tabs" role="tablist" aria-label="Формы входа и регистрации">
+        <button class="auth-tab is-active" type="button" role="tab" aria-selected="true" data-auth-tab="login">Войти</button>
+        <button class="auth-tab" type="button" role="tab" aria-selected="false" data-auth-tab="register">Регистрация</button>
+      </div>
+
+      <div class="auth-panel is-active" data-auth-panel="login">
+        <form class="auth-form">
+          <label class="auth-field">
+            <span>Email</span>
+            <input type="email" placeholder="hello@travel-project.ru" />
+          </label>
+          <label class="auth-field">
+            <span>Пароль</span>
+            <input type="password" placeholder="••••••••" />
+          </label>
+          <button class="auth-submit" type="button">Войти</button>
+        </form>
+      </div>
+
+      <div class="auth-panel" data-auth-panel="register">
+        <form class="auth-form">
+          <label class="auth-field">
+            <span>Имя</span>
+            <input type="text" placeholder="Александра" />
+          </label>
+          <label class="auth-field">
+            <span>Email</span>
+            <input type="email" placeholder="hello@travel-project.ru" />
+          </label>
+          <label class="auth-field">
+            <span>Пароль</span>
+            <input type="password" placeholder="Придумайте пароль" />
+          </label>
+          <button class="auth-submit" type="button">Создать аккаунт</button>
+        </form>
+      </div>
+
+      <div class="auth-note">Форма демонстрационная: можно переключаться между входом и регистрацией без перехода со страницы.</div>
+    </div>
+  </div>
+
+  <div class="auth-modal" id="routeModal" aria-hidden="true">
+    <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="routeModalTitle">
+      <div class="auth-head route-modal-header">
+        <div>
+          <strong id="routeModalTitle">В маршрут можно добавить:</strong>
+          <p>Выбери дополнительные опции для поездки перед отправкой заявки.</p>
+        </div>
+        <button class="auth-close" type="button" data-route-close aria-label="Закрыть">×</button>
+      </div>
+
+      <div class="route-step is-active" data-route-step="options">
+        <form class="route-options-form">
+          <label class="route-option-check">
+            <input type="checkbox" checked />
+            <span>Найти попутчика</span>
+          </label>
+          <label class="route-option-check">
+            <input type="checkbox" />
+            <span>Знакомство с местным жителем</span>
+          </label>
+          <label class="route-option-check">
+            <input type="checkbox" checked />
+            <span>Нетуристические районы</span>
+          </label>
+          <label class="route-option-check">
+            <input type="checkbox" checked />
+            <span>Локальные кафе</span>
+          </label>
+        </form>
+        <div class="route-actions">
+          <button class="route-next" type="button" data-route-next>Далее</button>
+        </div>
+      </div>
+
+      <div class="route-step" data-route-step="final">
+        <form class="route-final-form">
+          <label class="input-shell">
+            <span class="form-label">Имя</span>
+            <input type="text" placeholder="Анна" />
+          </label>
+          <label class="input-shell">
+            <span class="form-label">Телефон или email</span>
+            <input type="text" placeholder="+7 (999) 123-45-67 или anna@example.com" />
+          </label>
+          <label class="input-shell">
+            <span class="form-label">Комментарий</span>
+            <textarea placeholder="Хочу маршрут в спокойном темпе с локальными кафе и нетуристическими районами."></textarea>
+          </label>
+          <div class="route-actions">
+            <button class="route-back" type="button" data-route-back>Назад</button>
+            <button class="route-submit" type="button" data-route-submit>Оставить заявку</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-modal" id="routeSuccessModal" aria-hidden="true">
+    <div class="success-dialog" role="dialog" aria-modal="true" aria-labelledby="routeSuccessTitle">
+      <div class="success-head">
+        <button class="success-close" type="button" data-route-success-close aria-label="Закрыть">×</button>
+      </div>
+      <div class="success-line" id="routeSuccessTitle">Поздравляем! Первый шаг к путешествию мечты сделан.</div>
+    </div>
+  </div>
+
+  <div class="auth-modal" id="bookingModal" aria-hidden="true">
+    <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+      <div class="auth-head">
+        <div>
+          <strong id="bookingTitle">Запись в офис</strong>
+          <p>Выберите удобные дату и время для визита с 10:00 до 20:00.</p>
+        </div>
+        <button class="auth-close" type="button" data-booking-close aria-label="Закрыть">×</button>
+      </div>
+      <form class="booking-form">
+        <label class="input-shell">
+          <span class="form-label">Дата</span>
+          <input type="date" data-booking-date />
+        </label>
+        <label class="input-shell">
+          <span class="form-label">Время</span>
+          <select data-booking-time>
+            <option value="">Выберите время</option>
+            <option>10:00 - 11:00</option>
+            <option>11:00 - 12:00</option>
+            <option>12:00 - 13:00</option>
+            <option>13:00 - 14:00</option>
+            <option>14:00 - 15:00</option>
+            <option>15:00 - 16:00</option>
+            <option>16:00 - 17:00</option>
+            <option>17:00 - 18:00</option>
+            <option>18:00 - 19:00</option>
+            <option>19:00 - 20:00</option>
+            <option>20:00 - 21:00</option>
+          </select>
+        </label>
+        <div class="booking-error" data-booking-error>ЗАПОЛНИТЕ ОБЯЗАТЕЛЬНОЕ ПОЛЕ</div>
+        <div class="success-message" data-booking-success>Ваша запись подтверждена.<br />Мы свяжемся с вами за день до визита<br />для подтверждения актуальности записи.</div>
+        <button class="route-submit" type="button" data-booking-submit>Подтвердить запись</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="auth-modal" id="articleModal" aria-hidden="true">
+    <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="articleModalTitle">
+      <div class="auth-head">
+        <div>
+          <strong id="articleModalTitle">Статья</strong>
+        </div>
+        <button class="auth-close" type="button" data-article-close aria-label="Закрыть">×</button>
+      </div>
+      <div class="article-modal-body" data-article-body></div>
+    </div>
+  </div>
 
   <footer>
     <div class="container footer-inner">
@@ -1263,8 +2200,278 @@
         <strong>Твое путешествие</strong>
         <div class="muted">Персональные маршруты без шаблонных туров.</div>
       </div>
-      <div class="muted">Первый экран • О&nbsp;сервисе • Сборка маршрута • Как это работает • Примеры • Блог • Отзывы • Контакты</div>
     </div>
   </footer>
+
+  <script>
+    const authModal = document.getElementById('authModal');
+    const authOpenButton = document.querySelector('[data-auth-open]');
+    const authCloseButton = document.querySelector('[data-auth-close]');
+    const authTabs = document.querySelectorAll('[data-auth-tab]');
+    const authPanels = document.querySelectorAll('[data-auth-panel]');
+    const routeModal = document.getElementById('routeModal');
+    const routeOpenButton = document.querySelector('[data-route-open]');
+    const routeCloseButton = document.querySelector('[data-route-close]');
+    const routeHeader = document.querySelector('.route-modal-header');
+    const routeSteps = document.querySelectorAll('[data-route-step]');
+    const routeNextButton = document.querySelector('[data-route-next]');
+    const routeBackButton = document.querySelector('[data-route-back]');
+    const routeSubmitButton = document.querySelector('[data-route-submit]');
+    const routeSuccessModal = document.getElementById('routeSuccessModal');
+    const routeSuccessCloseButton = document.querySelector('[data-route-success-close]');
+    const bookingModal = document.getElementById('bookingModal');
+    const bookingOpenButton = document.querySelector('[data-booking-open]');
+    const bookingCloseButton = document.querySelector('[data-booking-close]');
+    const bookingSubmitButton = document.querySelector('[data-booking-submit]');
+    const bookingSuccessMessage = document.querySelector('[data-booking-success]');
+    const bookingDateInput = document.querySelector('[data-booking-date]');
+    const bookingTimeSelect = document.querySelector('[data-booking-time]');
+    const bookingErrorMessage = document.querySelector('[data-booking-error]');
+    const articleModal = document.getElementById('articleModal');
+    const articleCloseButton = document.querySelector('[data-article-close]');
+    const articleBody = document.querySelector('[data-article-body]');
+    const articleTitle = document.getElementById('articleModalTitle');
+    const articleButtons = document.querySelectorAll('[data-article-open]');
+    const blogCards = document.querySelector('[data-blog-cards]');
+    const blogPrevButton = document.querySelector('[data-blog-prev]');
+    const blogNextButton = document.querySelector('[data-blog-next]');
+
+    const articleContent = {
+      guest: {
+        title: 'Как увидеть город не как турист, а как гость',
+        paragraphs: [
+          'Начинать знакомство с городом лучше не с самых популярных достопримечательностей, а с тех районов, где чувствуется обычная жизнь: небольшие пекарни, тихие дворы, локальные магазины и места, куда заходят жители по пути домой.',
+          'Хороший личный маршрут всегда сочетает узнаваемые точки и атмосферные остановки. Именно такие паузы делают поездку глубже: завтрак в маленьком кафе, прогулка по набережной без толпы и вечерняя локация, которую не видно в стандартных путеводителях.',
+          'Если хочется почувствовать город по-настоящему, оставляйте в расписании свободное время. Оно нужно не для пустоты, а для спонтанности: зайти на рынок, выбрать красивую улицу без плана и задержаться там, где действительно нравится.'
+        ]
+      },
+      cafes: {
+        title: 'Нетуристические кафе, куда хочется возвращаться',
+        paragraphs: [
+          'Локальные кафе редко находятся на главных туристических улицах. Чаще всего это небольшие места рядом с жилыми кварталами, рынками или творческими пространствами, куда приходят за атмосферой, а не за фотографией.',
+          'В таких точках ценят простое, но качественное меню, живое общение и спокойный ритм. Именно они хорошо работают внутри персонального маршрута: дают возможность передохнуть, увидеть повседневный ритм города и не перегружать день перемещениями.',
+          'При выборе кафе для маршрута мы обычно учитываем время суток, район, удобство перехода к следующей точке и общее настроение поездки — от позднего завтрака до долгого вечернего ужина.'
+        ]
+      },
+      evening: {
+        title: 'Город после заката: маршруты для спокойного вечера',
+        paragraphs: [
+          'Вечерний маршрут не обязательно должен быть насыщенным. Наоборот, лучшие сценарии после заката строятся вокруг плавного ритма: смотровая точка, короткая прогулка, красивый свет улиц и тихое место для ужина или чая.',
+          'Если день был активным, вечером особенно важно сократить логистику. Лучше выбрать один район и прожить его последовательно: пройтись по набережной, зайти в атмосферное кафе, а затем закончить маршрут в точке с видом на город.',
+          'Такой формат помогает почувствовать путешествие мягче и глубже, без ощущения гонки и усталости от обязательных точек.'
+        ]
+      },
+      food: {
+        title: 'Как встроить локальную гастрономию в маршрут',
+        paragraphs: [
+          'Гастрономическая часть поездки становится ярче, если включать рынки, небольшие лавки, пекарни и камерные гастробары не хаотично, а как органичные остановки внутри общего маршрута.',
+          'Для такого сценария важно понять, где еда усиливает впечатление от района: ранний кофе перед прогулкой, рынок по пути между точками или ужин в конце дня в месте, которое поддерживает настроение поездки.',
+          'Лучший гастрономический маршрут — тот, в котором локальные вкусы работают на общий ритм путешествия и не превращают день в список разрозненных адресов.'
+        ]
+      },
+      districts: {
+        title: 'Как выбирать районы для прогулок, если хочется увидеть настоящий ритм города',
+        paragraphs: [
+          'Район для прогулки лучше выбирать не по количеству достопримечательностей, а по атмосфере. Важно понять, какой день вы хотите прожить: спокойный, насыщенный, гастрономический, визуальный или с акцентом на местную жизнь.',
+          'Хорошо работают маршруты, где есть переход от более оживлённой части к тихой: от рынка к жилым улицам, от центральной площади к соседним кварталам, от музея к парку или набережной.',
+          'Такая логика позволяет не просто смотреть на город, а постепенно в него входить — без резких скачков по локациям и без ощущения перегруженного дня.'
+        ]
+      },
+      manager: {
+        title: 'Что обсудить с персональным менеджером перед поездкой',
+        paragraphs: [
+          'Чтобы маршрут получился действительно личным, важно заранее обозначить базовые ожидания: сколько времени вы готовы проводить в движении, нужен ли запас на отдых, интересуют ли вас гастрономия, прогулки, музеи, природа или знакомства с местными.',
+          'Отдельно стоит обсудить бюджет, предпочтительный район проживания, желаемый темп и всё, что может сделать поездку комфортнее: ранние завтраки, вечерние прогулки, нетуристические места или поиск попутчика.',
+          'Чем точнее исходные вводные, тем органичнее получается готовый сценарий поездки и тем меньше в нём случайных решений.'
+        ]
+      }
+    };
+
+    const openAuthModal = () => {
+      authModal.classList.add('is-open');
+      authModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+    };
+
+    const closeAuthModal = () => {
+      authModal.classList.remove('is-open');
+      authModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    };
+
+    const openRouteModal = () => {
+      setRouteStep('options');
+      routeModal.classList.add('is-open');
+      routeModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+    };
+
+    const closeRouteModal = () => {
+      setRouteStep('options');
+      routeModal.classList.remove('is-open');
+      routeModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    };
+
+    const openRouteSuccessModal = () => {
+      routeSuccessModal.classList.add('is-open');
+      routeSuccessModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+    };
+
+    const closeRouteSuccessModal = () => {
+      routeSuccessModal.classList.remove('is-open');
+      routeSuccessModal.setAttribute('aria-hidden', 'true');
+      routeModal.classList.remove('is-open');
+      routeModal.setAttribute('aria-hidden', 'true');
+      setRouteStep('options');
+      document.body.classList.remove('modal-open');
+    };
+
+    const openBookingModal = () => {
+      bookingModal.classList.add('is-open');
+      bookingModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+    };
+
+    const closeBookingModal = () => {
+      bookingModal.classList.remove('is-open');
+      bookingModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      bookingSuccessMessage.classList.remove('is-visible');
+      bookingErrorMessage.classList.remove('is-visible');
+      bookingSubmitButton.classList.remove('is-hidden');
+    };
+
+    const openArticleModal = (articleKey) => {
+      const article = articleContent[articleKey];
+
+      if (!article) {
+        return;
+      }
+
+      articleTitle.textContent = article.title;
+      articleBody.innerHTML = article.paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join('');
+      articleModal.classList.add('is-open');
+      articleModal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+    };
+
+    const closeArticleModal = () => {
+      articleModal.classList.remove('is-open');
+      articleModal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+    };
+
+    const setRouteStep = (stepName) => {
+      routeSteps.forEach((step) => {
+       step.classList.toggle('is-active', step.dataset.routeStep === stepName);
+      });
+
+       routeHeader.classList.toggle('is-hidden', stepName === 'final');
+    };
+
+    const setActiveAuthTab = (tabName) => {
+      authTabs.forEach((tab) => {
+        const isActive = tab.dataset.authTab === tabName;
+        tab.classList.toggle('is-active', isActive);
+        tab.setAttribute('aria-selected', String(isActive));
+      });
+
+      authPanels.forEach((panel) => {
+        panel.classList.toggle('is-active', panel.dataset.authPanel === tabName);
+      });
+    };
+
+    authOpenButton.addEventListener('click', openAuthModal);
+    authCloseButton.addEventListener('click', closeAuthModal);
+    routeOpenButton.addEventListener('click', openRouteModal);
+    routeCloseButton.addEventListener('click', closeRouteModal);
+    routeSuccessCloseButton.addEventListener('click', closeRouteSuccessModal);
+    bookingOpenButton.addEventListener('click', openBookingModal);
+    bookingCloseButton.addEventListener('click', closeBookingModal);
+    routeNextButton.addEventListener('click', () => setRouteStep('final'));
+    routeBackButton.addEventListener('click', () => setRouteStep('options'));
+    routeSubmitButton.addEventListener('click', () => {
+      openRouteSuccessModal();
+    });
+    bookingSubmitButton.addEventListener('click', () => {
+      if (!bookingDateInput.value || !bookingTimeSelect.value) {
+        bookingErrorMessage.classList.add('is-visible');
+        bookingSuccessMessage.classList.remove('is-visible');
+        bookingSubmitButton.classList.remove('is-hidden');
+        return;
+      }
+
+      bookingErrorMessage.classList.remove('is-visible');
+      bookingSubmitButton.classList.add('is-hidden');
+      bookingSuccessMessage.classList.add('is-visible');
+    });
+    articleCloseButton.addEventListener('click', closeArticleModal);
+
+    articleButtons.forEach((button) => {
+      button.addEventListener('click', () => openArticleModal(button.dataset.articleOpen));
+    });
+
+    blogPrevButton.addEventListener('click', () => {
+      blogCards.scrollBy({ left: -(blogCards.clientWidth + 18), behavior: 'smooth' });
+    });
+
+    blogNextButton.addEventListener('click', () => {
+      blogCards.scrollBy({ left: blogCards.clientWidth + 18, behavior: 'smooth' });
+    });
+
+    authTabs.forEach((tab) => {
+      tab.addEventListener('click', () => setActiveAuthTab(tab.dataset.authTab));
+    });
+
+    authModal.addEventListener('click', (event) => {
+      if (event.target === authModal) {
+        closeAuthModal();
+      }
+    });
+
+    routeModal.addEventListener('click', (event) => {
+      if (event.target === routeModal) {
+        closeRouteModal();
+      }
+    });
+
+    routeSuccessModal.addEventListener('click', (event) => {
+      if (event.target === routeSuccessModal) {
+        closeRouteSuccessModal();
+      }
+    });
+
+    bookingModal.addEventListener('click', (event) => {
+      if (event.target === bookingModal) {
+        closeBookingModal();
+      }
+    });
+
+    articleModal.addEventListener('click', (event) => {
+      if (event.target === articleModal) {
+        closeArticleModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && authModal.classList.contains('is-open')) {
+        closeAuthModal();
+      }
+      if (event.key === 'Escape' && routeModal.classList.contains('is-open')) {
+        closeRouteModal();
+      }
+      if (event.key === 'Escape' && routeSuccessModal.classList.contains('is-open')) {
+        closeRouteSuccessModal();
+      }
+      if (event.key === 'Escape' && bookingModal.classList.contains('is-open')) {
+        closeBookingModal();
+      }
+      if (event.key === 'Escape' && articleModal.classList.contains('is-open')) {
+        closeArticleModal();
+      }
+    });
+  </script>
 </body>
 </html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Персональные рекомендации в попутчики</title>
+  <style>
+    :root {
+      --bg: #f5fbff;
+      --surface: rgba(255, 255, 255, 0.92);
+      --text: #18323a;
+      --muted: #5c7680;
+      --sky: #66b7ff;
+      --sky-deep: #2d8fe4;
+      --pink: #f59ac7;
+      --line: rgba(24, 50, 58, 0.08);
+      --shadow: 0 20px 46px rgba(24, 50, 58, 0.10);
+      --radius: 28px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top right, rgba(102, 183, 255, 0.16), transparent 32%), radial-gradient(circle at left center, rgba(245, 154, 199, 0.10), transparent 28%), var(--bg);
+    }
+    .page { width: min(calc(100% - 32px), 1120px); margin: 0 auto; padding: 24px 0 56px; }
+    .topbar { display: flex; justify-content: flex-end; margin-bottom: 12px; }
+    .close-btn {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.4rem;
+      line-height: 1;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.88);
+      box-shadow: 0 14px 28px rgba(24, 50, 58, 0.10);
+    }
+    .hero {
+      display: grid;
+      gap: 12px;
+      padding: 28px;
+      border-radius: 32px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.96), rgba(232,246,255,0.92));
+      box-shadow: var(--shadow), 0 0 40px rgba(102, 183, 255, 0.14);
+      border: 1px solid rgba(45, 143, 228, 0.10);
+      animation: blockReveal 0.7s ease both;
+    }
+    h1 { margin: 0; font-size: clamp(2rem, 4vw, 3rem); line-height: 1.08; max-width: 18ch; }
+    .lead { margin: 0; color: var(--muted); line-height: 1.65; }
+    .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
+    .card { display: grid; gap: 14px; padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); animation: blockReveal 0.8s ease both; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 24px 46px rgba(24, 50, 58, 0.12); border-color: rgba(45, 143, 228, 0.14); }
+    .head { display: flex; align-items: center; gap: 14px; }
+    .avatar { width: 58px; height: 58px; border-radius: 18px; overflow: hidden; flex-shrink: 0; background: rgba(102, 183, 255, 0.12); }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .head strong { display: block; font-size: 1.02rem; margin-bottom: 4px; }
+    .muted { color: var(--muted); }
+    .note { margin: 0; color: var(--muted); line-height: 1.62; font-size: 0.95rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { padding: 8px 12px; border-radius: 999px; background: rgba(45, 143, 228, 0.08); color: var(--sky-deep); font-size: 0.88rem; font-weight: 600; }
+    .action-row { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-top: auto; }
+    .interest-btn { width: 44px; height: 44px; border: 0; border-radius: 50%; cursor: pointer; font-size: 1.1rem; color: white; background: linear-gradient(135deg, var(--sky-deep), var(--pink)); box-shadow: 0 14px 28px rgba(45, 143, 228, 0.24); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .interest-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 32px rgba(45, 143, 228, 0.28); }
+    .interest-btn.is-active { background: linear-gradient(135deg, #28b587, #66d6a9); }
+    @keyframes blockReveal { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 920px) { .grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="topbar"><button class="close-btn" type="button" data-close-window aria-label="Закрыть">×</button></div>
+    <section class="hero">
+      <h1>Мы нашли попутчиков,<br />с которыми у вас совпадает ритм поездки</h1>
+      <p class="lead">Нажмите на символ в карточке, чтобы откликнуться на совпадение и сохранить интерес к рекомендациям.</p>
+    </section>
+    <section class="grid">
+      <article class="card">
+        <div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80" alt="Елена" /></div><div><strong>Елена, 29</strong><div class="muted">Спокойный городской отдых</div></div></div>
+        <p class="note">Любит прогулки по районам, небольшие музеи, атмосферные кафе и маршруты без перегруженного расписания. Хорошо совпадает с мягким ритмом поездки и любовью к локальным местам.</p>
+        <div class="tags"><span class="tag">Лиссабон</span><span class="tag">4–5 дней</span><span class="tag">Средний бюджет</span></div>
+        <div class="action-row"><button class="interest-btn" type="button" data-interest-toggle aria-label="Откликнуться">✦</button></div>
+      </article>
+      <article class="card">
+        <div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80" alt="Игорь" /></div><div><strong>Игорь, 31</strong><div class="muted">Активный, но без перегруза</div></div></div>
+        <p class="note">Любит чередовать прогулки по городу, видовые точки и локальные заведения, оставляя время на спонтанные остановки. Подходит для насыщенного, но не утомительного маршрута.</p>
+        <div class="tags"><span class="tag">Стамбул</span><span class="tag">5–7 дней</span><span class="tag">Комфортный бюджет</span></div>
+        <div class="action-row"><button class="interest-btn" type="button" data-interest-toggle aria-label="Откликнуться">✦</button></div>
+      </article>
+      <article class="card">
+        <div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80" alt="Даниил" /></div><div><strong>Даниил, 28</strong><div class="muted">Маршруты с балансом прогулок и впечатлений</div></div></div>
+        <p class="note">Выбирает поездки с понятным ритмом: немного архитектуры, атмосферные кварталы, локальная еда и свободное окно для импровизации. Совпадает по сценарию отдыха и бюджету.</p>
+        <div class="tags"><span class="tag">Будапешт</span><span class="tag">3–4 дня</span><span class="tag">Средний бюджет</span></div>
+        <div class="action-row"><button class="interest-btn" type="button" data-interest-toggle aria-label="Откликнуться">✦</button></div>
+      </article>
+    </section>
+  </main>
+  <script>
+    document.querySelector('[data-close-window]').addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+        return;
+      }
+      window.close();
+    });
+
+    document.querySelectorAll('[data-interest-toggle]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const isActive = button.classList.toggle('is-active');
+        button.textContent = isActive ? '✓' : '✦';
+      });
+    });
+  </script>
+</body>
+</html>
