@@ -147,6 +147,11 @@
       padding-bottom: 0;
     }
 
+    #planner > .container {
+      padding-top: 8px;
+      padding-bottom: 20px;
+    }
+
     #planner .section-head {
       gap: 8px;
       margin-bottom: 10px;
@@ -154,17 +159,20 @@
 
     #planner h2 {
       font-size: clamp(1.7rem, 3vw, 2.55rem);
-      max-width: 18ch;
+      max-width: none;
+      white-space: nowrap;
     }
 
     #planner .lead {
       font-size: 0.96rem;
-      max-width: 52ch;
+      max-width: none;
+      white-space: nowrap;
     }
 
     #planner .plan-form,
     #planner .route-preview {
-      padding: 10px;
+      padding: 14px;
+      min-height: 460px;
     }
 
     #planner .plan-form {
@@ -203,10 +211,14 @@
 
     #planner .btn.btn-primary {
       min-height: 46px;
+      border: 0;
+      appearance: none;
+      background: linear-gradient(135deg, var(--sky-deep), #57a8f4 58%, var(--sky));
+      box-shadow: 0 14px 28px rgba(45, 143, 228, 0.24);
     }
 
     #planner .route-preview .map-shot {
-      min-height: 112px;
+      min-height: 220px;
       padding: 10px;
     }
 
@@ -490,6 +502,7 @@
       margin-top: 14px;
     }
 
+    #planner .section-head .eyebrow,
     #about .section-head .eyebrow,
     #examples .section-head .eyebrow,
     #blog .section-head .eyebrow,
@@ -723,20 +736,12 @@
     }
 
     .preview-copy-line {
-      display: flex;
-      align-items: baseline;
-      justify-content: flex-start;
-      gap: 8px;
-    }
-
-    .preview-copy-line > span:last-child {
-      margin-left: auto;
+      display: block;
     }
 
     .preview-copy-rest {
       display: block;
-      text-align: justify;
-      text-justify: inter-word;
+      text-align: left;
       hyphens: auto;
     }
 
@@ -897,9 +902,9 @@
       display: grid;
       gap: 14px;
       align-content: space-between;
-      background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(234, 246, 255, 0.92));
-      border: 1px solid rgba(45, 143, 228, 0.14);
-      box-shadow: 0 16px 34px rgba(45, 143, 228, 0.14), 0 0 34px rgba(102, 183, 255, 0.18);
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(232, 246, 255, 0.92));
+      border: 1px solid rgba(45, 143, 228, 0.10);
+      box-shadow: var(--shadow), 0 0 40px rgba(102, 183, 255, 0.14);
     }
 
     #about .feature-card::after {
@@ -909,7 +914,7 @@
       width: 170px;
       height: 170px;
       border-radius: 999px;
-      background: radial-gradient(circle, rgba(102, 183, 255, 0.22), rgba(102, 183, 255, 0));
+      background: radial-gradient(circle, rgba(102, 183, 255, 0.18), rgba(102, 183, 255, 0));
       pointer-events: none;
     }
 
@@ -919,15 +924,17 @@
     }
 
     .icon {
-      width: 48px;
-      height: 48px;
-      display: grid;
+      width: 44px;
+      height: 44px;
+      display: inline-grid;
       place-items: center;
       margin-bottom: 16px;
-      border-radius: 16px;
-      color: var(--sky-deep);
-      background: linear-gradient(145deg, rgba(102, 183, 255, 0.2), rgba(245, 154, 199, 0.12));
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #6ea7f1 0%, #98a4eb 48%, #d58fcf 100%);
+      box-shadow: 0 14px 28px rgba(45, 143, 228, 0.24);
       font-weight: 800;
+      font-size: 1.1rem;
     }
 
     .feature-card p,
@@ -1038,6 +1045,11 @@
       gap: 12px;
     }
 
+    .route-final-form .input-shell.is-invalid {
+      border-color: rgba(199, 85, 110, 0.32);
+      box-shadow: 0 0 0 3px rgba(245, 154, 199, 0.12);
+    }
+
     .route-final-form .input-shell input,
     .route-final-form .input-shell textarea,
     .contact-form input,
@@ -1145,6 +1157,28 @@
       font-weight: 700;
       cursor: pointer;
       box-shadow: 0 14px 28px rgba(45, 143, 228, 0.22);
+    }
+
+    .route-submit:disabled {
+      cursor: not-allowed;
+      opacity: 0.58;
+      box-shadow: none;
+      filter: grayscale(0.08);
+    }
+
+    .route-submit-hint {
+      display: none;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(245, 154, 199, 0.12);
+      border: 1px solid rgba(199, 85, 110, 0.2);
+      color: #8c4963;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    .route-submit-hint.is-visible {
+      display: block;
     }
 
     .route-preview {
@@ -1394,6 +1428,12 @@
       transition: transform 0.28s ease, box-shadow 0.28s ease;
     }
 
+    .match-cta.is-disabled {
+      opacity: 0.92;
+      border-color: rgba(24, 50, 58, 0.08);
+      box-shadow: var(--shadow);
+    }
+
     .match-cta::after {
       content: "";
       position: absolute;
@@ -1408,6 +1448,11 @@
     .match-cta:hover {
       transform: translateY(-3px);
       box-shadow: 0 20px 40px rgba(45, 143, 228, 0.18), 0 0 42px rgba(102, 183, 255, 0.22);
+    }
+
+    .match-cta.is-disabled:hover {
+      transform: none;
+      box-shadow: var(--shadow);
     }
 
     .match-cta-badge,
@@ -1435,24 +1480,75 @@
       line-height: 1.2;
     }
 
-    .match-cta-symbol {
+    .match-cta-note {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .match-cta-button {
+      position: relative;
+      z-index: 1;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      color: var(--sky-deep);
+      justify-content: center;
+      width: fit-content;
+      min-height: 46px;
+      padding: 0 20px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
       font-weight: 700;
     }
 
-    .match-cta-symbol::before {
-      content: "3";
+    .match-cta-button.is-hidden,
+    .match-cta-symbol.is-hidden,
+    .match-cta-action-row.is-hidden {
+      display: none;
+    }
+
+    .match-cta-action-row {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .match-cta-count {
       width: 34px;
       height: 34px;
       border-radius: 50%;
       display: grid;
       place-items: center;
       color: white;
+      font-weight: 700;
       background: linear-gradient(135deg, var(--sky-deep), var(--sky));
       box-shadow: 0 12px 24px rgba(45, 143, 228, 0.22);
+    }
+
+    .match-cta-symbol {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(45, 143, 228, 0.18);
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--sky-deep);
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .match-cta-button.btn-secondary {
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(24, 50, 58, 0.08);
+      color: var(--text);
+      box-shadow: 0 12px 24px rgba(24, 50, 58, 0.08);
     }
 
     .quote-head,
@@ -1669,6 +1765,7 @@
       }
 
       .hero-copy .eyebrow,
+      #planner .section-head .eyebrow,
       #about .section-head .eyebrow,
       #examples .section-head .eyebrow,
       #blog .section-head .eyebrow,
@@ -1706,13 +1803,17 @@
 
       .hero-grid,
       #about > .container,
-      #planner > .container,
       #examples > .container,
       #blog > .container,
       #reviews > .container,
       #contacts > .container {
         padding-top: 8px;
         padding-bottom: 8px;
+      }
+
+      #planner > .container {
+        padding-top: 5px;
+        padding-bottom: 12px;
       }
 
       .hero-copy,
@@ -1798,17 +1899,20 @@
 
       #planner h2 {
         font-size: clamp(1.08rem, 1.85vw, 1.42rem);
-        max-width: 14ch;
+        max-width: none;
+        white-space: nowrap;
       }
 
       #planner .lead {
         font-size: 0.74rem;
-        max-width: 35ch;
+        max-width: none;
+        white-space: nowrap;
       }
 
       #planner .plan-form,
       #planner .route-preview {
-        padding: 6px;
+        padding: 10px;
+        min-height: 360px;
       }
 
       #planner .plan-form {
@@ -1856,7 +1960,7 @@
       }
 
       #planner .route-preview .map-shot {
-        min-height: 46px;
+        min-height: 120px;
         padding: 5px;
       }
 
@@ -2021,6 +2125,16 @@
         padding-top: 0;
       }
 
+      #planner > .container {
+        padding-top: 8px;
+        padding-bottom: 16px;
+      }
+
+      #planner h2,
+      #planner .lead {
+        white-space: normal;
+      }
+
       #examples,
       #reviews {
         padding-top: 0;
@@ -2110,7 +2224,7 @@
         <a href="#planner">Сборка маршрута</a>
         <a href="#examples">Примеры</a>
         <a href="#blog">Блог</a>
-        <a href="#reviews">Отзывы</a>
+        <a href="#reviews">Отзывы и рекомендации</a>
         <a href="#contacts">Контакты</a>
       </nav>
     </div>
@@ -2136,7 +2250,7 @@
             <div class="preview-head">
               <div>
                 <strong>Как выглядит маршрут</strong>
-                <div class="preview-copy"><span class="preview-copy-line"><span>Не просто список мест, а</span><span>спокойно собранный день:</span></span><span class="preview-copy-rest">где начать утро, что оставить на&nbsp;день и&nbsp;чем завершить маршрут без спешки.</span></div>
+                <div class="preview-copy"><span class="preview-copy-line"><span>Не просто список мест, а </span><span>спокойно собранный день:</span></span><span class="preview-copy-rest">где начать утро, что оставить на&nbsp;день и&nbsp;чем завершить маршрут без спешки.</span></div>
               </div>
             </div>
 
@@ -2195,7 +2309,7 @@
         <div class="section-head">
           <span class="eyebrow">Сборка маршрута</span>
           <h2>Собери маршрут под себя</h2>
-          <p class="lead">Выбери направление, формат отдыха и&nbsp;темп поездки —<br />и&nbsp;получи персональный сценарий поездки.</p>
+          <p class="lead">Выбери направление, формат отдыха и&nbsp;темп поездки — и&nbsp;получи персональный сценарий поездки.</p>
         </div>
 
         <div class="planner-shell">
@@ -2203,7 +2317,8 @@
             <div class="form-grid">
               <label class="input-shell">
                 <span class="form-label">Город</span>
-                <select>
+                <select data-planner-field data-planner-city>
+                  <option value="" selected disabled>Выбери город</option>
                   <option>Лиссабон</option>
                   <option>Стамбул</option>
                   <option>Тбилиси</option>
@@ -2220,18 +2335,20 @@
               </label>
               <label class="input-shell">
                 <span class="form-label">Тип отдыха</span>
-                <select>
-                  <option>Городской уикенд</option>
-                  <option>Спокойный отдых</option>
-                  <option>Гастрономическая поездка</option>
-                  <option>Экстримальный</option>
-                  <option>Трекинг</option>
-                  <option>Комбинированный</option>
+                <select data-planner-field data-planner-type>
+                  <option value="" selected disabled>Выбери формат отдыха</option>
+                  <option value="city-weekend">Городской уикенд</option>
+                  <option value="calm-rest">Спокойный отдых</option>
+                  <option value="gastro-trip">Гастрономическая поездка</option>
+                  <option value="extreme">Экстримальный</option>
+                  <option value="trekking">Трекинг</option>
+                  <option value="combined">Комбинированный</option>
                 </select>
               </label>
               <label class="input-shell">
                 <span class="form-label">Бюджет</span>
-                <select>
+                <select data-planner-field>
+                  <option value="" selected disabled>Выбери бюджет</option>
                   <option>Средний</option>
                   <option>Экономный</option>
                   <option>Комфортный</option>
@@ -2240,7 +2357,8 @@
               </label>
               <label class="input-shell">
                 <span class="form-label">Длительность</span>
-                <select>
+                <select data-planner-field>
+                  <option value="" selected disabled>Выбери длительность</option>
                   <option>4&nbsp;дня</option>
                   <option>7&nbsp;дней</option>
                   <option>10&nbsp;дней</option>
@@ -2251,15 +2369,16 @@
               </label>
               <label class="input-shell" style="grid-column: 1 / -1;">
                 <span class="form-label">Темп</span>
-                <select>
-                  <option>Спокойный и&nbsp;гибкий</option>
-                  <option>Сбалансированный</option>
-                  <option>Насыщенный</option>
+                <select data-planner-field data-planner-pace>
+                  <option value="" selected disabled>Выбери темп</option>
+                  <option value="calm-flex">Спокойный и&nbsp;гибкий</option>
+                  <option value="balanced">Сбалансированный</option>
+                  <option value="intense">Насыщенный</option>
                 </select>
               </label>
             </div>
 
-            <div class="helper-note">Дополнительные опции поездки и&nbsp;особые пожелания — можно добавить на&nbsp;следующем шаге.</div>
+            <div class="helper-note">Выбрать дополнительные опции поездки и&nbsp;указать особые пожелания — можно добавить на&nbsp;следующем шаге.</div>
             <button class="btn btn-primary" type="button" data-route-open>Собрать маршрут</button>
           </div>
 
@@ -2475,11 +2594,16 @@
             </div>
 
             <div class="proof-group">
-              <a class="match-cta" href="./recommendations.html" target="_blank" rel="noopener">
+              <div class="match-cta is-disabled" data-match-card>
                 <span class="match-cta-badge">Персональная подборка</span>
-                <strong>Вам уже подобрали персональные рекомендации в&nbsp;попутчики</strong>
-                <span class="match-cta-symbol">Просмотр</span>
-              </a>
+                <strong data-match-title>Рекомендации в&nbsp;попутчики откроются после сборки маршрута</strong>
+                <p class="match-cta-note" data-match-note>Собери свой маршрут и&nbsp;выбери опцию «Найти попутчика», чтобы получить персональные рекомендации.</p>
+                <button class="match-cta-button btn btn-primary" type="button" data-match-build data-match-action="planner">Собрать маршрут</button>
+                <div class="match-cta-action-row is-hidden" data-match-view-wrap>
+                  <span class="match-cta-count" data-match-count>0</span>
+                  <a class="match-cta-symbol" href="./recommendations.html" target="_blank" rel="noopener" data-match-view>Просмотр</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2584,7 +2708,7 @@
       <div class="route-step is-active" data-route-step="options">
         <form class="route-options-form">
           <label class="route-option-check">
-            <input type="checkbox" checked />
+            <input type="checkbox" data-route-companion />
             <span>Найти попутчика</span>
           </label>
           <label class="route-option-check">
@@ -2609,19 +2733,20 @@
         <form class="route-final-form">
           <label class="input-shell">
             <span class="form-label">Имя</span>
-            <input type="text" placeholder="Анна" />
+            <input type="text" placeholder="Анна" data-route-final-field data-route-required />
           </label>
           <label class="input-shell">
             <span class="form-label">Телефон или email</span>
-            <input type="text" placeholder="+7 (999) 123-45-67 или anna@example.com" />
+            <input type="text" placeholder="+7 (999) 123-45-67 или anna@example.com" data-route-final-field data-route-required />
           </label>
           <label class="input-shell">
             <span class="form-label">Комментарий</span>
-            <textarea placeholder="Хочу маршрут в спокойном темпе с локальными кафе и нетуристическими районами."></textarea>
+            <textarea placeholder="Хочу маршрут в спокойном темпе с локальными кафе и нетуристическими районами." data-route-final-field></textarea>
           </label>
+          <div class="route-submit-hint is-visible" data-route-submit-hint>Заполни обязательные поля, чтобы оставить заявку.</div>
           <div class="route-actions">
             <button class="route-back" type="button" data-route-back>Назад</button>
-            <button class="route-submit" type="button" data-route-submit>Оставить заявку</button>
+            <button class="route-submit" type="button" data-route-submit disabled>Оставить заявку</button>
           </div>
         </form>
       </div>
@@ -2731,6 +2856,87 @@
     const headerElement = document.querySelector('.site-header');
     const mainElement = document.querySelector('main');
     const navAnchorLinks = document.querySelectorAll('.nav-links a[href^="#"], .brand[href^="#"]');
+    const plannerFields = document.querySelectorAll('[data-planner-field]');
+    const plannerCityField = document.querySelector('[data-planner-city]');
+    const plannerTypeField = document.querySelector('[data-planner-type]');
+    const plannerPaceField = document.querySelector('[data-planner-pace]');
+    const matchCard = document.querySelector('[data-match-card]');
+    const matchTitle = document.querySelector('[data-match-title]');
+    const matchNote = document.querySelector('[data-match-note]');
+    const matchBuildLink = document.querySelector('[data-match-build]');
+    const matchViewLink = document.querySelector('[data-match-view]');
+    const matchViewWrap = document.querySelector('[data-match-view-wrap]');
+    const matchCount = document.querySelector('[data-match-count]');
+    const routeCompanionCheckbox = document.querySelector('[data-route-companion]');
+    const routeFinalFields = document.querySelectorAll('[data-route-final-field]');
+    const routeRequiredFields = document.querySelectorAll('[data-route-required]');
+    const routeSubmitHint = document.querySelector('[data-route-submit-hint]');
+
+    const recommendationPools = {
+      'city-weekend': [
+        { name: 'Елена, 29', subtitle: 'Короткие поездки по городам Европы', city: 'Лиссабон', duration: '4–5 дней', note: 'Любит компактные поездки с красивыми кварталами, кофе утром и прогулками без перегруза.' },
+        { name: 'Артём, 30', subtitle: 'Архитектура, бары и пешие маршруты', city: 'Прага', duration: '3–4 дня', note: 'Собирает городские уикенды вокруг атмосферных районов, смотровых точек и местной еды.' },
+        { name: 'Марина, 27', subtitle: 'Визуальные города и лёгкий ритм', city: 'Вена', duration: '4 дня', note: 'Любит сочетать прогулки, локальные музеи и паузы в красивых кафе без жёсткого тайминга.' }
+      ],
+      'calm-rest': [
+        { name: 'Ольга, 33', subtitle: 'Спокойные поездки без спешки', city: 'Батуми', duration: '6 дней', note: 'Выбирает мягкий сценарий дня: поздний завтрак, прогулка по району и длинный вечер у моря.' },
+        { name: 'Денис, 35', subtitle: 'Комфортный отдых в своём ритме', city: 'Тбилиси', duration: '5 дней', note: 'Ищет города, где можно проживать атмосферу постепенно и оставлять место для спонтанности.' },
+        { name: 'Наталья, 31', subtitle: 'Неспешные маршруты и видовые точки', city: 'Будва', duration: '7 дней', note: 'Любит чередовать тихие локации, прогулки и небольшие гастро-точки без перегруженного плана.' }
+      ],
+      'gastro-trip': [
+        { name: 'Ирина, 28', subtitle: 'Гастро-маршруты и локальные рынки', city: 'Стамбул', duration: '5–6 дней', note: 'Строит поездку вокруг завтраков, рынков, винных баров и мест, которые любят местные.' },
+        { name: 'Павел, 34', subtitle: 'Еда как часть маршрута', city: 'Болонья', duration: '4 дня', note: 'Любит, когда гастрономия встроена в прогулку по районам, а не превращается в список адресов.' },
+        { name: 'Лиза, 26', subtitle: 'Кафе, пекарни и атмосферные ужины', city: 'Париж', duration: '5 дней', note: 'Подбирает поездки с красивыми завтраками, вечерними ужинами и локациями с характером.' }
+      ],
+      'extreme': [
+        { name: 'Кирилл, 29', subtitle: 'Активные поездки с драйвом', city: 'Тбилиси', duration: '6 дней', note: 'Любит насыщать путешествие активностями, но всё равно держит маршрут логичным и удобным.' },
+        { name: 'София, 27', subtitle: 'Эмоции, виды и смена локаций', city: 'Тенерифе', duration: '7 дней', note: 'Выбирает поездки, где есть адреналин, красивые виды и возможность быстро переключаться между форматами.' },
+        { name: 'Максим, 32', subtitle: 'Город + активный выезд', city: 'Барселона', duration: '5 дней', note: 'Любит микс из активного дня, спортивных точек и насыщенного вечера без потери ритма.' }
+      ],
+      'trekking': [
+        { name: 'Вера, 30', subtitle: 'Природные маршруты и треки', city: 'Кутаиси', duration: '6 дней', note: 'Собирает поездки вокруг хайкинга, видовых троп и понятной логистики между точками.' },
+        { name: 'Роман, 34', subtitle: 'Походы и горные панорамы', city: 'Ереван', duration: '7 дней', note: 'Любит совмещать треккинг, ранние выезды и спокойное восстановление после активного дня.' },
+        { name: 'Алина, 28', subtitle: 'Трекинг с комфортным темпом', city: 'Инсбрук', duration: '5 дней', note: 'Выбирает маршруты, где природные точки идут в удобной последовательности и без лишней суеты.' }
+      ],
+      'combined': [
+        { name: 'Юлия, 31', subtitle: 'Город, гастрономия и паузы', city: 'Рим', duration: '5 дней', note: 'Любит комбинировать прогулки, архитектуру и гастро-точки, чтобы поездка была насыщенной, но живой.' },
+        { name: 'Никита, 29', subtitle: 'Баланс впечатлений и отдыха', city: 'Стамбул', duration: '6 дней', note: 'Собирает маршруты с разными сценариями дня: от прогулок и музеев до вечерних кварталов и локальных мест.' },
+        { name: 'Анна, 30', subtitle: 'Разные форматы в одной поездке', city: 'Лиссабон', duration: '5 дней', note: 'Ценит поездки, где можно менять ритм от спокойного утра к более насыщенному дню и атмосферному вечеру.' }
+      ]
+    };
+
+    const paceConfig = {
+      'calm-flex': {
+        label: 'Спокойный и гибкий',
+        count: 2,
+        tag: 'Спокойный темп',
+        additions: [
+          'Хорошо совпадает с мягким ритмом поездки и уважением к паузам между точками.',
+          'Подходит для маршрута без спешки, с акцентом на комфорт и органичный темп.',
+          'Совпадает по ожиданию от спокойного дня, где важна атмосфера, а не гонка по локациям.'
+        ]
+      },
+      balanced: {
+        label: 'Сбалансированный',
+        count: 3,
+        tag: 'Сбалансированный темп',
+        additions: [
+          'Хорошо чувствует баланс между прогулками, впечатлениями и временем на отдых.',
+          'Подходит для сценария, где день насыщенный, но без перегруза и жёсткой спешки.',
+          'Совпадает по ожиданию от поездки, где активности чередуются с комфортными паузами.'
+        ]
+      },
+      intense: {
+        label: 'Насыщенный',
+        count: 1,
+        tag: 'Насыщенный темп',
+        additions: [
+          'Подходит для более динамичного маршрута, где хочется вместить максимум впечатлений.',
+          'Совпадает с темпом поездки, в котором важны плотный день и яркая смена локаций.',
+          'Готов к активному сценарию с более насыщенным ритмом и короткими паузами.'
+        ]
+      }
+    };
 
     const articleContent = {
       guest: {
@@ -2887,6 +3093,81 @@
       document.documentElement.style.setProperty('--header-offset', `${headerElement.offsetHeight}px`);
     };
 
+    const isPlannerComplete = () => Array.from(plannerFields).every((field) => field.value.trim() !== '');
+
+    const getRecommendationsForSelection = () => {
+      const selectedCity = plannerCityField?.selectedOptions?.[0]?.textContent?.trim() || '';
+      const typeKey = plannerTypeField?.value;
+      const paceKey = plannerPaceField?.value;
+      const pool = recommendationPools[typeKey] || [];
+      const pace = paceConfig[paceKey];
+
+      if (!pool.length || !pace) {
+        return [];
+      }
+
+      return pool.slice(0, Math.min(pace.count, pool.length)).map((person, index) => ({
+        ...person,
+        city: selectedCity || person.city,
+        note: `${person.note} ${pace.additions[index % pace.additions.length]}`
+      }));
+    };
+
+    const updateRouteSubmitState = () => {
+      const isFilled = Array.from(routeRequiredFields).every((field) => field.value.trim() !== '');
+
+      routeFinalFields.forEach((field) => {
+        const isRequired = field.hasAttribute('data-route-required');
+        field.closest('.input-shell')?.classList.toggle('is-invalid', isRequired && field.value.trim() === '');
+      });
+
+      routeSubmitButton.disabled = !isFilled;
+      routeSubmitHint?.classList.toggle('is-visible', !isFilled);
+    };
+
+    const updateMatchCardState = () => {
+      const isReady = isPlannerComplete();
+      const isCompanionEnabled = Boolean(routeCompanionCheckbox?.checked);
+      const recommendations = getRecommendationsForSelection();
+      const cityLabel = plannerCityField?.selectedOptions?.[0]?.textContent?.trim() || '';
+      const typeLabel = plannerTypeField?.selectedOptions?.[0]?.textContent || '';
+      const paceLabel = paceConfig[plannerPaceField?.value]?.label || '';
+
+      if (!matchCard || !matchTitle || !matchNote || !matchBuildLink || !matchViewLink || !matchViewWrap || !matchCount) {
+        return;
+      }
+
+      if (!isReady) {
+        matchCard.classList.add('is-disabled');
+        matchTitle.innerHTML = 'Рекомендации в&nbsp;попутчики откроются после сборки маршрута';
+        matchNote.innerHTML = 'Собери свой маршрут и&nbsp;выбери опцию «Найти попутчика», чтобы получить персональные рекомендации.';
+        matchBuildLink.textContent = 'Собрать маршрут';
+        matchBuildLink.dataset.matchAction = 'planner';
+        matchBuildLink.classList.remove('is-hidden');
+        matchViewWrap.classList.add('is-hidden');
+        return;
+      }
+
+      if (!isCompanionEnabled) {
+        matchCard.classList.add('is-disabled');
+        matchTitle.innerHTML = 'Подборка откроется после выбора опции «Найти попутчика»';
+        matchNote.innerHTML = 'Выберите опцию «Найти попутчика», чтобы получить персональные рекомендации.';
+        matchBuildLink.textContent = 'Выбрать опцию';
+        matchBuildLink.dataset.matchAction = 'route-options';
+        matchBuildLink.classList.remove('is-hidden');
+        matchViewWrap.classList.add('is-hidden');
+        return;
+      }
+
+      matchCard.classList.remove('is-disabled');
+      matchTitle.innerHTML = `Для вас доступно ${recommendations.length} рекомендац${recommendations.length === 1 ? 'ия' : recommendations.length < 5 ? 'ии' : 'ий'} в&nbsp;попутчики`;
+      matchNote.innerHTML = `Подборка уже собрана для города «${cityLabel}», формата «${typeLabel}» и&nbsp;темпа «${paceLabel}».`;
+      matchCount.textContent = String(recommendations.length);
+      matchViewLink.href = `./recommendations.html?city=${encodeURIComponent(plannerCityField?.value || '')}&travelType=${encodeURIComponent(plannerTypeField?.value || '')}&pace=${encodeURIComponent(plannerPaceField?.value || '')}`;
+      matchBuildLink.classList.add('is-hidden');
+      matchViewWrap.classList.remove('is-hidden');
+    };
+
     const scrollToSection = (targetSelector) => {
       const targetSection = document.querySelector(targetSelector);
 
@@ -2912,6 +3193,7 @@
     routeNextButton.addEventListener('click', () => setRouteStep('final'));
     routeBackButton.addEventListener('click', () => setRouteStep('options'));
     routeSubmitButton.addEventListener('click', () => {
+      updateMatchCardState();
       openRouteSuccessModal();
     });
     bookingSubmitButton.addEventListener('click', () => {
@@ -2946,7 +3228,27 @@
       });
     });
 
+    matchBuildLink.addEventListener('click', () => {
+      if (matchBuildLink.dataset.matchAction === 'route-options') {
+        openRouteModal();
+        return;
+      }
+
+      scrollToSection('#planner');
+    });
+
+    plannerFields.forEach((field) => {
+      field.addEventListener('change', updateMatchCardState);
+    });
+
+    routeCompanionCheckbox?.addEventListener('change', updateMatchCardState);
+    routeFinalFields.forEach((field) => {
+      field.addEventListener('input', updateRouteSubmitState);
+    });
+
     syncHeaderOffset();
+    updateMatchCardState();
+    updateRouteSubmitState();
     window.addEventListener('resize', syncHeaderOffset);
 
     blogPrevButton.addEventListener('click', () => {

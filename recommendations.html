@@ -73,31 +73,123 @@
   <main class="page">
     <div class="topbar"><button class="close-btn" type="button" data-close-window aria-label="Закрыть">×</button></div>
     <section class="hero">
-      <h1>Мы нашли попутчиков,<br />с которыми у вас совпадает ритм поездки</h1>
-      <p class="lead">Нажмите на символ в карточке, чтобы откликнуться на совпадение и сохранить интерес к рекомендациям.</p>
+      <h1 data-hero-title>Мы нашли попутчиков,<br />с которыми у вас совпадает ритм поездки</h1>
+      <p class="lead" data-hero-lead>Подборка учитывает выбранный тип отдыха и темп поездки.</p>
     </section>
-    <section class="grid">
-      <article class="card">
-        <div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80" alt="Елена" /></div><div><strong>Елена, 29</strong><div class="muted">Спокойный городской отдых</div></div></div>
-        <p class="note">Любит прогулки по районам, небольшие музеи, атмосферные кафе и маршруты без перегруженного расписания. Хорошо совпадает с мягким ритмом поездки и любовью к локальным местам.</p>
-        <div class="tags"><span class="tag">Лиссабон</span><span class="tag">4–5 дней</span><span class="tag">Средний бюджет</span></div>
-        <div class="action-row"><button class="interest-btn" type="button" data-interest-toggle aria-label="Откликнуться">✦</button></div>
-      </article>
-      <article class="card">
-        <div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80" alt="Игорь" /></div><div><strong>Игорь, 31</strong><div class="muted">Активный, но без перегруза</div></div></div>
-        <p class="note">Любит чередовать прогулки по городу, видовые точки и локальные заведения, оставляя время на спонтанные остановки. Подходит для насыщенного, но не утомительного маршрута.</p>
-        <div class="tags"><span class="tag">Стамбул</span><span class="tag">5–7 дней</span><span class="tag">Комфортный бюджет</span></div>
-        <div class="action-row"><button class="interest-btn" type="button" data-interest-toggle aria-label="Откликнуться">✦</button></div>
-      </article>
-      <article class="card">
-        <div class="head"><div class="avatar"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80" alt="Даниил" /></div><div><strong>Даниил, 28</strong><div class="muted">Маршруты с балансом прогулок и впечатлений</div></div></div>
-        <p class="note">Выбирает поездки с понятным ритмом: немного архитектуры, атмосферные кварталы, локальная еда и свободное окно для импровизации. Совпадает по сценарию отдыха и бюджету.</p>
-        <div class="tags"><span class="tag">Будапешт</span><span class="tag">3–4 дня</span><span class="tag">Средний бюджет</span></div>
-        <div class="action-row"><button class="interest-btn" type="button" data-interest-toggle aria-label="Откликнуться">✦</button></div>
-      </article>
-    </section>
+    <section class="grid" data-recommendations-grid></section>
   </main>
   <script>
+    const recommendationPools = {
+      'city-weekend': [
+        { name: 'Елена, 29', subtitle: 'Короткие поездки по городам Европы', city: 'Лиссабон', duration: '4–5 дней', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80', note: 'Любит компактные поездки с красивыми кварталами, кофе утром и прогулками без перегруза.' },
+        { name: 'Артём, 30', subtitle: 'Архитектура, бары и пешие маршруты', city: 'Прага', duration: '3–4 дня', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80', note: 'Собирает городские уикенды вокруг атмосферных районов, смотровых точек и местной еды.' },
+        { name: 'Марина, 27', subtitle: 'Визуальные города и лёгкий ритм', city: 'Вена', duration: '4 дня', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80', note: 'Любит сочетать прогулки, локальные музеи и паузы в красивых кафе без жёсткого тайминга.' }
+      ],
+      'calm-rest': [
+        { name: 'Ольга, 33', subtitle: 'Спокойные поездки без спешки', city: 'Батуми', duration: '6 дней', image: 'https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=240&q=80', note: 'Выбирает мягкий сценарий дня: поздний завтрак, прогулка по району и длинный вечер у моря.' },
+        { name: 'Денис, 35', subtitle: 'Комфортный отдых в своём ритме', city: 'Тбилиси', duration: '5 дней', image: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?auto=format&fit=crop&w=240&q=80', note: 'Ищет города, где можно проживать атмосферу постепенно и оставлять место для спонтанности.' },
+        { name: 'Наталья, 31', subtitle: 'Неспешные маршруты и видовые точки', city: 'Будва', duration: '7 дней', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80', note: 'Любит чередовать тихие локации, прогулки и небольшие гастро-точки без перегруженного плана.' }
+      ],
+      'gastro-trip': [
+        { name: 'Ирина, 28', subtitle: 'Гастро-маршруты и локальные рынки', city: 'Стамбул', duration: '5–6 дней', image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=240&q=80', note: 'Строит поездку вокруг завтраков, рынков, винных баров и мест, которые любят местные.' },
+        { name: 'Павел, 34', subtitle: 'Еда как часть маршрута', city: 'Болонья', duration: '4 дня', image: 'https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&w=240&q=80', note: 'Любит, когда гастрономия встроена в прогулку по районам, а не превращается в список адресов.' },
+        { name: 'Лиза, 26', subtitle: 'Кафе, пекарни и атмосферные ужины', city: 'Париж', duration: '5 дней', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=240&q=80', note: 'Подбирает поездки с красивыми завтраками, вечерними ужинами и локациями с характером.' }
+      ],
+      extreme: [
+        { name: 'Кирилл, 29', subtitle: 'Активные поездки с драйвом', city: 'Тбилиси', duration: '6 дней', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=240&q=80', note: 'Любит насыщать путешествие активностями, но всё равно держит маршрут логичным и удобным.' },
+        { name: 'София, 27', subtitle: 'Эмоции, виды и смена локаций', city: 'Тенерифе', duration: '7 дней', image: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=240&q=80', note: 'Выбирает поездки, где есть адреналин, красивые виды и возможность быстро переключаться между форматами.' },
+        { name: 'Максим, 32', subtitle: 'Город + активный выезд', city: 'Барселона', duration: '5 дней', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80', note: 'Любит микс из активного дня, спортивных точек и насыщенного вечера без потери ритма.' }
+      ],
+      trekking: [
+        { name: 'Вера, 30', subtitle: 'Природные маршруты и треки', city: 'Кутаиси', duration: '6 дней', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=240&q=80', note: 'Собирает поездки вокруг хайкинга, видовых троп и понятной логистики между точками.' },
+        { name: 'Роман, 34', subtitle: 'Походы и горные панорамы', city: 'Ереван', duration: '7 дней', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=240&q=80', note: 'Любит совмещать треккинг, ранние выезды и спокойное восстановление после активного дня.' },
+        { name: 'Алина, 28', subtitle: 'Трекинг с комфортным темпом', city: 'Инсбрук', duration: '5 дней', image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=240&q=80', note: 'Выбирает маршруты, где природные точки идут в удобной последовательности и без лишней суеты.' }
+      ],
+      combined: [
+        { name: 'Юлия, 31', subtitle: 'Город, гастрономия и паузы', city: 'Рим', duration: '5 дней', image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80', note: 'Любит комбинировать прогулки, архитектуру и гастро-точки, чтобы поездка была насыщенной, но живой.' },
+        { name: 'Никита, 29', subtitle: 'Баланс впечатлений и отдыха', city: 'Стамбул', duration: '6 дней', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=240&q=80', note: 'Собирает маршруты с разными сценариями дня: от прогулок и музеев до вечерних кварталов и локальных мест.' },
+        { name: 'Анна, 30', subtitle: 'Разные форматы в одной поездке', city: 'Лиссабон', duration: '5 дней', image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=240&q=80', note: 'Ценит поездки, где можно менять ритм от спокойного утра к более насыщенному дню и атмосферному вечеру.' }
+      ]
+    };
+
+    const paceConfig = {
+      'calm-flex': {
+        label: 'Спокойный и гибкий',
+        count: 2,
+        tag: 'Спокойный темп',
+        additions: [
+          'Хорошо совпадает с мягким ритмом поездки и уважением к паузам между точками.',
+          'Подходит для маршрута без спешки, с акцентом на комфорт и органичный темп.',
+          'Совпадает по ожиданию от спокойного дня, где важна атмосфера, а не гонка по локациям.'
+        ]
+      },
+      balanced: {
+        label: 'Сбалансированный',
+        count: 3,
+        tag: 'Сбалансированный темп',
+        additions: [
+          'Хорошо чувствует баланс между прогулками, впечатлениями и временем на отдых.',
+          'Подходит для сценария, где день насыщенный, но без перегруза и жёсткой спешки.',
+          'Совпадает по ожиданию от поездки, где активности чередуются с комфортными паузами.'
+        ]
+      },
+      intense: {
+        label: 'Насыщенный',
+        count: 1,
+        tag: 'Насыщенный темп',
+        additions: [
+          'Подходит для более динамичного маршрута, где хочется вместить максимум впечатлений.',
+          'Совпадает с темпом поездки, в котором важны плотный день и яркая смена локаций.',
+          'Готов к активному сценарию с более насыщенным ритмом и короткими паузами.'
+        ]
+      }
+    };
+
+    const typeLabels = {
+      'city-weekend': 'Городской уикенд',
+      'calm-rest': 'Спокойный отдых',
+      'gastro-trip': 'Гастрономическая поездка',
+      extreme: 'Экстримальный',
+      trekking: 'Трекинг',
+      combined: 'Комбинированный'
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const city = params.get('city') || 'Лиссабон';
+    const travelType = params.get('travelType') || 'combined';
+    const pace = params.get('pace') || 'balanced';
+    const grid = document.querySelector('[data-recommendations-grid]');
+    const heroTitle = document.querySelector('[data-hero-title]');
+    const heroLead = document.querySelector('[data-hero-lead]');
+
+    const recommendations = (recommendationPools[travelType] || recommendationPools.combined)
+      .slice(0, Math.min((paceConfig[pace] || paceConfig.balanced).count, 3))
+      .map((person, index) => ({
+        ...person,
+        city,
+        note: `${person.note} ${(paceConfig[pace] || paceConfig.balanced).additions[index % (paceConfig[pace] || paceConfig.balanced).additions.length]}`,
+        paceTag: (paceConfig[pace] || paceConfig.balanced).tag
+      }));
+
+    const recommendationWord = recommendations.length === 1 ? 'рекомендацию' : recommendations.length < 5 ? 'рекомендации' : 'рекомендаций';
+    heroTitle.innerHTML = `Мы нашли ${recommendations.length} ${recommendationWord},<br />которые совпадают с вашим ритмом поездки`;
+    heroLead.textContent = `Подборка собрана для города «${city}», формата «${typeLabels[travelType] || typeLabels.combined}» и темпа «${(paceConfig[pace] || paceConfig.balanced).label}».`;
+
+    grid.innerHTML = recommendations.map((person) => `
+      <article class="card">
+        <div class="head">
+          <div class="avatar"><img src="${person.image}" alt="${person.name}" /></div>
+          <div>
+            <strong>${person.name}</strong>
+            <div class="muted">${person.subtitle}</div>
+          </div>
+        </div>
+        <p class="note">${person.note}</p>
+        <div class="tags"><span class="tag">${person.city}</span><span class="tag">${person.duration}</span><span class="tag">${person.paceTag}</span></div>
+        <div class="action-row"><button class="interest-btn" type="button" data-interest-toggle aria-label="Откликнуться">✦</button></div>
+      </article>
+    `).join('');
+
     document.querySelector('[data-close-window]').addEventListener('click', () => {
       if (window.history.length > 1) {
         window.history.back();
