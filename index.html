@@ -28,22 +28,30 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; scroll-padding-top: var(--header-offset); }
+    html {
+      height: 100%;
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--header-offset);
+    }
 
     body {
+      min-height: 100%;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 0% 0%, rgba(102, 183, 255, 0.18), transparent 24%),
-        radial-gradient(circle at 100% 0%, rgba(245, 154, 199, 0.12), transparent 24%),
-        linear-gradient(180deg, #fffaf4 0%, #fff7ef 48%, #fffaf4 100%);
+        radial-gradient(circle at top left, rgba(112, 180, 255, 0.26), transparent 28%),
+        radial-gradient(circle at top right, rgba(244, 170, 204, 0.20), transparent 24%),
+        radial-gradient(circle at center right, rgba(255, 209, 153, 0.16), transparent 22%),
+        linear-gradient(145deg, #fff6ef 0%, #fffaf7 38%, #f7fbff 68%, #fff4ec 100%);
       line-height: 1.55;
       overflow-x: hidden;
+      overflow-y: hidden;
     }
 
     body::before,
     body::after {
       content: "";
+      display: none;
       position: fixed;
       z-index: -1;
       border-radius: 50%;
@@ -57,7 +65,7 @@
       height: 320px;
       left: -120px;
       top: -100px;
-      background: rgba(102, 183, 255, 0.22);
+      background: rgba(102, 183, 255, 0.28);
     }
 
     body::after {
@@ -65,7 +73,7 @@
       height: 280px;
       right: -90px;
       top: 220px;
-      background: rgba(245, 154, 199, 0.16);
+      background: rgba(245, 154, 199, 0.22);
     }
 
     a { color: inherit; text-decoration: none; }
@@ -78,19 +86,38 @@
     }
 
     .section {
-      padding: 44px 0;
-      scroll-margin-top: var(--header-offset);
+      height: 100%;
+      min-height: 100%;
+      display: flex;
+      align-items: stretch;
+      padding: 0;
+      scroll-margin-top: 0;
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
+      overflow: hidden;
+      background: transparent;
+      isolation: isolate;
     }
 
+    .section > .container {
+      height: 100%;
+      min-height: 100%;
+      max-height: 100%;
+    }
+
+    .hero-grid,
     #about > .container,
     #planner > .container,
     #examples > .container,
     #blog > .container,
     #reviews > .container,
     #contacts > .container {
-      min-height: var(--section-screen);
+      height: 100%;
+      min-height: 100%;
+      overflow: auto;
     }
 
+    .hero-grid,
     #about > .container,
     #planner > .container,
     #examples > .container,
@@ -99,46 +126,99 @@
     #contacts > .container {
       display: grid;
       align-content: start;
-      padding-top: 18px;
-      padding-bottom: 18px;
+      padding-top: 14px;
+      padding-bottom: 14px;
+      padding-left: 0;
+      padding-right: 0;
+      border-radius: 0;
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      backdrop-filter: none;
     }
 
     .section.alt {
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.22));
+      background: transparent;
     }
 
     #planner {
-      scroll-margin-top: 76px;
-      padding-top: 18px;
-      padding-bottom: 18px;
+      scroll-margin-top: var(--header-offset);
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
     #planner .section-head {
-      gap: 10px;
-      margin-bottom: 24px;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    #planner h2 {
+      font-size: clamp(1.7rem, 3vw, 2.55rem);
+      max-width: 18ch;
+    }
+
+    #planner .lead {
+      font-size: 0.96rem;
+      max-width: 52ch;
     }
 
     #planner .plan-form,
     #planner .route-preview {
-      padding: 16px;
+      padding: 10px;
     }
 
     #planner .plan-form {
-      gap: 12px;
+      gap: 6px;
     }
 
     #planner .form-grid {
-      gap: 8px;
+      gap: 4px;
     }
 
     #planner .input-shell {
-      padding: 10px 14px;
+      padding: 7px 10px;
+      border-radius: 14px;
+    }
+
+    #planner .form-label {
+      margin-bottom: 4px;
+      font-size: 0.8rem;
+    }
+
+    #planner select,
+    #planner input,
+    #planner textarea {
+      min-height: 38px;
+    }
+
+    #planner .helper-note {
+      padding: 10px 12px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    #planner .planner-shell {
+      gap: 10px;
+    }
+
+    #planner .btn.btn-primary {
+      min-height: 46px;
+    }
+
+    #planner .route-preview .map-shot {
+      min-height: 112px;
+      padding: 10px;
+    }
+
+    #planner .summary-row {
+      padding: 4px 0;
+      font-size: 0.86rem;
     }
 
     #examples,
     #reviews {
-      padding-top: 18px;
-      padding-bottom: 18px;
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
     #examples .section-head,
@@ -148,8 +228,8 @@
     }
 
     #reviews {
-      padding-top: 8px;
-      padding-bottom: 18px;
+      padding-top: 0;
+      padding-bottom: 0;
     }
 
     #reviews .section-head {
@@ -191,8 +271,10 @@
     }
 
     .site-header {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       padding: 14px 0;
       background: rgba(255, 250, 244, 0.86);
@@ -200,8 +282,19 @@
       backdrop-filter: blur(14px);
     }
 
+    main {
+      height: calc(100vh - var(--header-offset));
+      margin-top: var(--header-offset);
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-snap-type: y proximity;
+      scroll-behavior: smooth;
+      overscroll-behavior-y: contain;
+    }
+
     .nav-wrap {
       display: flex;
+      flex-wrap: nowrap;
       align-items: center;
       justify-content: space-between;
       gap: 18px;
@@ -277,14 +370,21 @@
 
     .nav-links {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      display: none;
     }
 
     .nav-links a {
       padding: 10px 14px;
       border-radius: 12px;
       color: var(--muted);
+      white-space: nowrap;
       transition: background 0.24s ease, color 0.24s ease;
     }
 
@@ -371,7 +471,7 @@
     }
 
     .hero {
-      padding: 34px 0 38px;
+      padding: 0;
     }
 
     .hero-grid {
@@ -384,6 +484,18 @@
     .hero-copy {
       display: grid;
       gap: 16px;
+    }
+
+    .hero-copy .eyebrow {
+      margin-top: 14px;
+    }
+
+    #about .section-head .eyebrow,
+    #examples .section-head .eyebrow,
+    #blog .section-head .eyebrow,
+    #reviews .section-head .eyebrow,
+    #contacts .section-head .eyebrow {
+      margin-top: 14px;
     }
 
     .hero-copy h1 {
@@ -426,6 +538,7 @@
     .auth-trigger {
       min-height: 0;
       padding: 8px 14px;
+      margin-top: 12px;
       margin-bottom: 18px;
       border: 0;
       border-radius: 999px;
@@ -778,6 +891,33 @@
       padding: 22px;
     }
 
+    #about .feature-card {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      gap: 14px;
+      align-content: space-between;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(234, 246, 255, 0.92));
+      border: 1px solid rgba(45, 143, 228, 0.14);
+      box-shadow: 0 16px 34px rgba(45, 143, 228, 0.14), 0 0 34px rgba(102, 183, 255, 0.18);
+    }
+
+    #about .feature-card::after {
+      content: "";
+      position: absolute;
+      inset: -24% -12% auto auto;
+      width: 170px;
+      height: 170px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(102, 183, 255, 0.22), rgba(102, 183, 255, 0));
+      pointer-events: none;
+    }
+
+    #about .feature-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
     .icon {
       width: 48px;
       height: 48px;
@@ -1061,6 +1201,14 @@
       align-items: start;
     }
 
+    #blog .blog-layout,
+    #blog .blog-carousel,
+    #blog .blog-cards {
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+    }
+
     .blog-intro {
       display: grid;
       gap: 18px;
@@ -1091,8 +1239,8 @@
     }
 
     #blog {
-      padding-bottom: 36px;
-      padding-top: 18px;
+      padding-bottom: 0;
+      padding-top: 0;
     }
 
     .blog-cards::-webkit-scrollbar {
@@ -1442,6 +1590,20 @@
       color: var(--muted);
     }
 
+    .contact-footer-note {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid rgba(24, 50, 58, 0.07);
+      width: fit-content;
+      color: var(--muted);
+    }
+
+    .contact-footer-note strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
     .booking-form {
       display: grid;
       gap: 12px;
@@ -1466,6 +1628,7 @@
     }
 
     footer {
+      display: none;
       padding: 24px 0 40px;
       color: var(--muted);
     }
@@ -1473,24 +1636,324 @@
     .footer-inner {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
+      width: fit-content;
+      max-width: min(100%, 420px);
       gap: 16px;
       flex-wrap: wrap;
-      padding-top: 18px;
+      padding-top: 12px;
       border-top: 1px solid rgba(24, 50, 58, 0.07);
     }
 
-    @media (max-width: 920px) {
+    @media (max-height: 760px) and (min-width: 761px) {
+      .site-header {
+        padding: 6px 0;
+      }
+
+      .brand {
+        font-size: 0.88rem;
+        gap: 8px;
+      }
+
+      .brand-mark {
+        width: 32px;
+        height: 32px;
+      }
+
+      .brand small {
+        font-size: 0.66rem;
+      }
+
+      .nav-wrap {
+        gap: 8px;
+      }
+
+      .hero-copy .eyebrow,
+      #about .section-head .eyebrow,
+      #examples .section-head .eyebrow,
+      #blog .section-head .eyebrow,
+      #reviews .section-head .eyebrow,
+      #contacts .section-head .eyebrow {
+        margin-top: 18px;
+      }
+
+      .nav-links {
+        gap: 4px;
+      }
+
+      .nav-links a {
+        padding: 7px 10px;
+        font-size: 0.86rem;
+      }
+
+      h1 {
+        font-size: clamp(1.62rem, 3.4vw, 2.6rem);
+      }
+
+      h2 {
+        font-size: clamp(1.22rem, 2.1vw, 1.64rem);
+        max-width: 14ch;
+      }
+
+      .lead {
+        font-size: 0.8rem;
+      }
+
+      .section-head {
+        gap: 5px;
+        margin-bottom: 8px;
+      }
+
       .hero-grid,
+      #about > .container,
+      #planner > .container,
+      #examples > .container,
+      #blog > .container,
+      #reviews > .container,
+      #contacts > .container {
+        padding-top: 8px;
+        padding-bottom: 8px;
+      }
+
+      .hero-copy,
+      .hero-benefits,
       .planner-shell,
+      .social-proof-grid,
       .contact-grid,
       .blog-layout,
-      .blog-cards,
-      .social-proof-grid,
       .grid-4,
       .grid-3,
-      .grid-2,
-      .form-grid {
+      .grid-2 {
+        gap: 8px;
+      }
+
+      .benefit-item,
+      .feature-card,
+      .step-card,
+      .route-card,
+      .idea-card,
+      .contact-card,
+      .preview-card,
+      .plan-form,
+      .route-preview,
+      .quote-card,
+      .companion-card {
+        padding: 8px;
+      }
+
+      .hero-copy {
+        gap: 8px;
+      }
+
+      .hero-sub {
+        font-size: 0.9rem;
+        max-width: 28ch;
+      }
+
+      .hero-benefits {
+        gap: 6px;
+        margin-top: 4px;
+      }
+
+      .hero-visual {
+        min-height: 150px;
+        gap: 6px;
+        padding-top: 0;
+      }
+
+      .preview-card {
+        padding: 8px;
+      }
+
+      .preview-layout {
+        gap: 8px;
+      }
+
+      .preview-summary {
+        padding: 8px 10px;
+      }
+
+      .preview-points {
+        gap: 4px;
+      }
+
+      .preview-points span {
+        font-size: 0.76rem;
+      }
+
+      .preview-media {
+        min-height: 88px;
+      }
+
+      .auth-trigger {
+        min-height: 0;
+        padding: 5px 10px;
+        margin-bottom: 4px;
+        font-size: 0.78rem;
+      }
+
+      #planner .section-head {
+        margin-bottom: 3px;
+      }
+
+      #planner h2 {
+        font-size: clamp(1.08rem, 1.85vw, 1.42rem);
+        max-width: 14ch;
+      }
+
+      #planner .lead {
+        font-size: 0.74rem;
+        max-width: 35ch;
+      }
+
+      #planner .plan-form,
+      #planner .route-preview {
+        padding: 6px;
+      }
+
+      #planner .plan-form {
+        gap: 2px;
+      }
+
+      #planner .form-grid {
+        gap: 2px;
+      }
+
+      #planner .input-shell {
+        padding: 4px 7px;
+        border-radius: 10px;
+      }
+
+      #planner .form-label {
+        margin-bottom: 2px;
+        font-size: 0.68rem;
+      }
+
+      #planner select,
+      #planner input,
+      #planner textarea {
+        min-height: 24px;
+        font-size: 0.82rem;
+      }
+
+      #planner .helper-note {
+        padding: 6px 8px;
+        font-size: 0.7rem;
+        line-height: 1.18;
+      }
+
+      #planner .planner-shell {
+        gap: 4px;
+      }
+
+      #planner [data-route-open] {
+        min-height: 30px;
+        font-size: 0.84rem;
+      }
+
+      #planner .route-preview {
+        gap: 3px;
+      }
+
+      #planner .route-preview .map-shot {
+        min-height: 46px;
+        padding: 5px;
+      }
+
+      #planner .chip,
+      #planner .mini-tag {
+        padding: 3px 5px;
+        font-size: 0.62rem;
+      }
+
+      #planner .summary-row {
+        padding: 1px 0;
+        font-size: 0.68rem;
+      }
+
+      #planner .route-preview h3 {
+        font-size: 0.88rem !important;
+        margin-bottom: 2px !important;
+      }
+
+      #planner .route-preview .eyebrow {
+        margin-bottom: 4px !important;
+      }
+
+      #reviews h2,
+      #contacts h2 {
+        font-size: clamp(1.06rem, 1.85vw, 1.36rem);
+        max-width: 12ch;
+      }
+
+      #reviews .section-head,
+      #contacts .section-head {
+        margin-bottom: 3px;
+      }
+
+      #reviews .reviews-stack {
+        margin-top: 1px;
+      }
+
+      #reviews .quote-card,
+      #reviews .companion-card {
+        padding: 7px;
+      }
+
+      #reviews .quote-card.is-overlay {
+        margin-top: -12px;
+        margin-left: 10px;
+        width: calc(100% - 10px);
+      }
+
+      #reviews .quote-head,
+      #reviews .companion-head {
+        gap: 7px;
+        margin-bottom: 3px;
+      }
+
+      #reviews .quote-avatar,
+      #reviews .companion-avatar {
+        width: 32px;
+        height: 32px;
+      }
+
+      #reviews .quote-note,
+      #reviews .companion-note,
+      #contacts .lead,
+      #contacts .contact-info-item p {
+        font-size: 0.72rem;
+        line-height: 1.18;
+      }
+
+      #reviews .companion-tags,
+      #reviews .mini-tag {
+        gap: 4px;
+      }
+
+      #contacts .contact-grid,
+      #contacts .contact-info-column {
+        gap: 6px;
+      }
+
+      #contacts .contact-info-item {
+        gap: 3px;
+      }
+
+      #contacts .contact-info-item .icon {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 2px;
+      }
+
+      #contacts .btn.btn-primary {
+        min-height: 34px;
+        margin-top: 6px !important;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .blog-layout {
         grid-template-columns: 1fr;
       }
 
@@ -1511,41 +1974,71 @@
         --header-offset: 132px;
       }
 
-      .section {
-        padding: 34px 0;
+      .planner-shell {
+        grid-template-columns: 1fr;
       }
 
+      body {
+        overflow-y: auto;
+      }
+
+      .section {
+        height: auto;
+        min-height: auto;
+        display: block;
+        padding: 0;
+        overflow: visible;
+      }
+
+      .hero-grid,
       #about > .container,
       #planner > .container,
       #examples > .container,
       #blog > .container,
       #reviews > .container,
       #contacts > .container {
+        height: auto;
         min-height: auto;
+        overflow: visible;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      main {
+        height: auto;
+        margin-top: var(--header-offset);
+        overflow: visible;
+        scroll-snap-type: none;
+      }
+
+      footer {
+        display: block;
       }
 
       #planner {
-        padding-top: 40px;
+        padding-top: 0;
       }
 
       #examples,
       #reviews {
-        padding-top: 24px;
-        padding-bottom: 24px;
+        padding-top: 0;
+        padding-bottom: 0;
       }
 
       #reviews {
         padding-top: 0;
-        padding-bottom: 18px;
+        padding-bottom: 0;
       }
 
       #examples {
-        padding-top: 22px;
+        padding-top: 0;
       }
 
       #blog {
-        padding-top: 26px;
-        padding-bottom: 48px;
+        padding-top: 0;
+        padding-bottom: 0;
       }
 
       .nav-wrap {
@@ -1669,7 +2162,7 @@
         <div class="section-head">
           <span class="eyebrow">О&nbsp;сервисе</span>
           <h2>Не просто каталог туров,<br />а&nbsp;сервис по&nbsp;созданию<br />персональных маршрутов</h2>
-          <p class="lead about-copy">Сервис помогает собрать поездку по&nbsp;интересам, бюджету, длительности и&nbsp;формату отдыха. Можно выбрать спокойный или насыщенный ритм, добавить локальные места и, при&nbsp;желании, найти попутчика.</p>
+          <p class="lead about-copy">Сервис помогает собрать поездку по&nbsp;интересам, бюджету, длительности и&nbsp;формату отдыха. Можно выбрать спокойный, насыщенный или комбинированный ритм, добавить локальные места, а&nbsp;при желании — знакомство с&nbsp;местным жителем, который проведёт по&nbsp;нетуристическим точкам, и подобрать попутчика под ваш стиль отдыха.</p>
         </div>
 
         <div class="grid-4">
@@ -2235,6 +2728,9 @@
     const blogCards = document.querySelector('[data-blog-cards]');
     const blogPrevButton = document.querySelector('[data-blog-prev]');
     const blogNextButton = document.querySelector('[data-blog-next]');
+    const headerElement = document.querySelector('.site-header');
+    const mainElement = document.querySelector('main');
+    const navAnchorLinks = document.querySelectorAll('.nav-links a[href^="#"], .brand[href^="#"]');
 
     const articleContent = {
       guest: {
@@ -2383,6 +2879,29 @@
       });
     };
 
+    const syncHeaderOffset = () => {
+      if (!headerElement) {
+        return;
+      }
+
+      document.documentElement.style.setProperty('--header-offset', `${headerElement.offsetHeight}px`);
+    };
+
+    const scrollToSection = (targetSelector) => {
+      const targetSection = document.querySelector(targetSelector);
+
+      if (!targetSection || !headerElement || !mainElement) {
+        return;
+      }
+
+      syncHeaderOffset();
+      targetSection.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
+    };
+
     authOpenButton.addEventListener('click', openAuthModal);
     authCloseButton.addEventListener('click', closeAuthModal);
     routeOpenButton.addEventListener('click', openRouteModal);
@@ -2412,6 +2931,23 @@
     articleButtons.forEach((button) => {
       button.addEventListener('click', () => openArticleModal(button.dataset.articleOpen));
     });
+
+    navAnchorLinks.forEach((link) => {
+      link.addEventListener('click', (event) => {
+        const targetSelector = link.getAttribute('href');
+
+        if (!targetSelector || !targetSelector.startsWith('#')) {
+          return;
+        }
+
+        event.preventDefault();
+        scrollToSection(targetSelector);
+        window.history.replaceState(null, '', targetSelector);
+      });
+    });
+
+    syncHeaderOffset();
+    window.addEventListener('resize', syncHeaderOffset);
 
     blogPrevButton.addEventListener('click', () => {
       blogCards.scrollBy({ left: -(blogCards.clientWidth + 18), behavior: 'smooth' });
